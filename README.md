@@ -64,7 +64,7 @@ Close the chrome, idea or any other application you configured to use ram disk.
 ```
    rm /usr/local/bin/ChromeRamDisk.sh
    launchctl unload -w ~/Library/LaunchAgents/OSXRamDisk.plist 
-   rm ~/Library/LaunchAgents/com.alanthing.ChromeRamDisk.plist
+   rm ~/Library/LaunchAgents/OSXRamDisk.plist
 ```
 
 TODO
