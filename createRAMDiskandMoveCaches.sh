@@ -20,15 +20,15 @@ ramfs_size_sectors=$((${ramfs_size_mb}*1024*1024/512))
 ramdisk_device=`hdid -nomount ram://${ramfs_size_sectors}`
 USERRAMDISK="$mount_point/$USER"
 
-# unmount if exists the RAM disk and mounts if doesn't
 mk_ram_disk()
 {
+    # unmount if exists the RAM disk and mounts if doesn't
     umount -f ${mount_point}
     newfs_hfs -v 'ramdisk' ${ramdisk_device}
     mkdir -p ${mount_point}
     mount -o noatime -t hfs ${ramdisk_device} ${mount_point}
 
-    # Hide RAM disk, we don't really need it to be annoiyng in finder.
+    # Hide RAM disk - we don't really need it to be annoiyng in finder.
     # comment out should you need it.
     hide_ramdisk
 }
@@ -38,11 +38,13 @@ mk_ram_disk()
 # add yours at the end.
 # -------------------------------------------------------
 
-# Chrome Cache
+# Google Chrome Cache
 move_chrome_cache()
 {
-    /bin/rm -rf ~/Library/Caches/Google/Chrome/*
+    /bin/mkdir -p /tmp/Google/Chrome
+    /bin/mv ~/Library/Caches/Google/Chrome/* /tmp/Google/Chrome/
     /bin/mkdir -pv ${USERRAMDISK}/Google/Chrome/Default
+    /bin/mv /tmp/Google/Chrome/ ${USERRAMDISK}/Google/Chrome
     /bin/ln -v -s ${USERRAMDISK}/Google/Chrome/Default ~/Library/Caches/Google/Chrome/Default
 }
 
@@ -73,7 +75,6 @@ move_itunes_cache()
 # Intellij Idea
 move_idea_cache()
 {
-   # todo add other versions support and CE edition
    # make a backup of config - will need it when uninstalling
    cp -f /Applications/IntelliJ\ IDEA\ 14.app/Contents/bin/idea.properties /Applications/IntelliJ\ IDEA\ 14.app/Contents/bin/idea.properties.back
    # Idea will create those dirs
