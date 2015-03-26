@@ -43,19 +43,27 @@ mk_ram_disk()
 # Google Chrome Cache
 move_chrome_cache()
 {
-    /bin/mkdir -p /tmp/Google/Chrome
-    /bin/mv ~/Library/Caches/Google/Chrome/* /tmp/Google/Chrome/
-    /bin/mkdir -pv ${USERRAMDISK}/Google/Chrome/Default
-    /bin/mv /tmp/Google/Chrome/ ${USERRAMDISK}/Google/Chrome
-    /bin/ln -v -s ${USERRAMDISK}/Google/Chrome/Default ~/Library/Caches/Google/Chrome/Default
+    if [ -d "~/Library/Caches/Google/Chrome" ]; then
+            if [ are_user_agree "I found chrome. Do you want move its cache?" -eq 1 ]; then
+                /bin/mkdir -p /tmp/Google/Chrome
+                /bin/mv ~/Library/Caches/Google/Chrome/* /tmp/Google/Chrome/
+                /bin/mkdir -pv ${USERRAMDISK}/Google/Chrome/Default
+                /bin/mv /tmp/Google/Chrome/ ${USERRAMDISK}/Google/Chrome
+                /bin/ln -v -s ${USERRAMDISK}/Google/Chrome/Default ~/Library/Caches/Google/Chrome/Default
+            fi
+        else
+            echo "No Google chrome folder has been found. Skiping"
+    fi
 }
 
 # Chrome Canary Cache
 move_chrome_chanary_cache()
 {
-    /bin/rm -rf ~/Library/Caches/Google/Chrome\ Canary/*
-    /bin/mkdir -p ${USERRAMDISK}/Google/Chrome\ Canary/Default
-    /bin/ln -s ${USERRAMDISK}/Google/Chrome\ Canary/Default ~/Library/Caches/Google/Chrome\ Canary/Default
+    if [-d "~/Library/Caches/Google/Chrome\ Canary"]; then
+        /bin/rm -rf ~/Library/Caches/Google/Chrome\ Canary/*
+        /bin/mkdir -p ${USERRAMDISK}/Google/Chrome\ Canary/Default
+        /bin/ln -s ${USERRAMDISK}/Google/Chrome\ Canary/Default ~/Library/Caches/Google/Chrome\ Canary/Default
+    fi
 }
 
 # Safari Cache
@@ -118,6 +126,18 @@ open_app()
 hide_ramdisk()
 {
     /usr/bin/chflags hidden ${mount_point}
+}
+
+# Checks user agreenes
+are_user_agree()
+{
+    read -p " $1 [y/n]" ${response}
+
+    if [[ ${response} = y ]]; then
+        return 1
+    else
+        return 0
+    fi
 }
 
 # -----------------------------------------------------------------------------------

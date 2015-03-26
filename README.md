@@ -35,7 +35,7 @@ Give it a try before installing
 ===============================
 ```
 git clone git@github.com:zafarella/OSX-RAMDisk.git
-./createRAMDiskandMoveCaches.sh
+./startupRAMDiskandCacheMover.sh
 ```
 
 Installation
