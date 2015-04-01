@@ -11,8 +11,6 @@
 # USE AT YOUR OWN RISK.
 #
 
-
-
 # The RAM amount you want to allocate for RAM disk. One of
 # 1024 2048 3072 4096 5120 6144
 # todo: set default value to 1/4 of RAM
@@ -21,6 +19,23 @@ mount_point=/Volumes/ramdisk
 ramfs_size_sectors=$((${ramfs_size_mb}*1024*1024/512))
 ramdisk_device=`hdid -nomount ram://${ramfs_size_sectors}`
 USERRAMDISK="$mount_point/$USER"
+
+# Checks user agreenes
+user_response()
+{
+ read -p " $1 [y/n]" ${response}
+  case ${response} in
+    [yY][eE][sS]|[yY]|"")
+      true
+      ;;
+    [nN][oO]|[nN])
+      false
+      ;;
+    *)
+      user_response $@
+      ;;
+  esac
+}
 
 mk_ram_disk()
 {
@@ -44,7 +59,7 @@ mk_ram_disk()
 move_chrome_cache()
 {
     if [ -d "~/Library/Caches/Google/Chrome" ]; then
-            if [ are_user_agree "I found chrome. Do you want move its cache?" -eq 1 ]; then
+            if user_response "I found chrome. Do you want move its cache?" ; then
                 /bin/mkdir -p /tmp/Google/Chrome
                 /bin/mv ~/Library/Caches/Google/Chrome/* /tmp/Google/Chrome/
                 /bin/mkdir -pv ${USERRAMDISK}/Google/Chrome/Default
@@ -60,18 +75,24 @@ move_chrome_cache()
 move_chrome_chanary_cache()
 {
     if [-d "~/Library/Caches/Google/Chrome\ Canary"]; then
-        /bin/rm -rf ~/Library/Caches/Google/Chrome\ Canary/*
-        /bin/mkdir -p ${USERRAMDISK}/Google/Chrome\ Canary/Default
-        /bin/ln -s ${USERRAMDISK}/Google/Chrome\ Canary/Default ~/Library/Caches/Google/Chrome\ Canary/Default
+        if user_response "I found Chrome Canary. Do you want move its cache?"; then
+            /bin/rm -rf ~/Library/Caches/Google/Chrome\ Canary/*
+            /bin/mkdir -p ${USERRAMDISK}/Google/Chrome\ Canary/Default
+            /bin/ln -s ${USERRAMDISK}/Google/Chrome\ Canary/Default ~/Library/Caches/Google/Chrome\ Canary/Default
+        fi
     fi
 }
 
 # Safari Cache
 move_safari_cache()
 {
-    /bin/rm -rf ~/Library/Caches/com.apple.Safari
-    /bin/mkdir -p ${USERRAMDISK}/Apple/Safari
-    /bin/ln -s ${USERRAMDISK}/Apple/Safari ~/Library/Caches/com.apple.Safari
+    if [ -d "~/Library/Caches/com.apple.Safari" ]; then
+        if user_response "Do you want to move Safari cache?"; then
+            /bin/rm -rf ~/Library/Caches/com.apple.Safari
+            /bin/mkdir -p ${USERRAMDISK}/Apple/Safari
+            /bin/ln -s ${USERRAMDISK}/Apple/Safari ~/Library/Caches/com.apple.Safari
+        fi
+    fi
 }
 
 # iTunes Cache
@@ -126,18 +147,6 @@ open_app()
 hide_ramdisk()
 {
     /usr/bin/chflags hidden ${mount_point}
-}
-
-# Checks user agreenes
-are_user_agree()
-{
-    read -p " $1 [y/n]" ${response}
-
-    if [[ ${response} = y ]]; then
-        return 1
-    else
-        return 0
-    fi
 }
 
 # -----------------------------------------------------------------------------------
