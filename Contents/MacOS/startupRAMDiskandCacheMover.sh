@@ -6,7 +6,7 @@
 # especially for IDE
 #
 # Drawbacks and risks are that if RAM disk becomes full - performance will degrate
-# significantly. 
+# significantly.
 #
 # USE AT YOUR OWN RISK.
 #
@@ -134,13 +134,13 @@ move_android_studio_cache()
 # Closes passed as arg app
 close_app()
 {
-    osascript -e "quit app \"${1}\"" 
+    osascript -e "quit app \"${1}\""
 }
 
 # Open an application
 open_app()
 {
-     osascript -e "tell app \"${1}\" to activate" 
+     osascript -e "tell app \"${1}\" to activate"
 }
 
 # Hide RamDisk directory
