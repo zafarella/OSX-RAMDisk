@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env bash -x
 
 # This is about to create a RAM disk in OS X and move the apps caches into it
 # to increase performance of those apps.
@@ -58,13 +58,13 @@ mk_ram_disk()
 # Google Chrome Cache
 move_chrome_cache()
 {
-    if [ -d "~/Library/Caches/Google/Chrome" ]; then
+    if [ -d "/Users/$USER/Library/Caches/Google/Chrome" ]; then
             if user_response "I found chrome. Do you want move its cache?" ; then
                 /bin/mkdir -p /tmp/Google/Chrome
                 /bin/mv ~/Library/Caches/Google/Chrome/* /tmp/Google/Chrome/
                 /bin/mkdir -pv ${USERRAMDISK}/Google/Chrome/Default
                 /bin/mv /tmp/Google/Chrome/ ${USERRAMDISK}/Google/Chrome
-                /bin/ln -v -s ${USERRAMDISK}/Google/Chrome/Default ~/Library/Caches/Google/Chrome/Default
+                /bin/ln -v -s -f ${USERRAMDISK}/Google/Chrome/Default ~/Library/Caches/Google/Chrome/Default
             fi
         else
             echo "No Google chrome folder has been found. Skiping"
@@ -74,7 +74,7 @@ move_chrome_cache()
 # Chrome Canary Cache
 move_chrome_chanary_cache()
 {
-    if [-d "~/Library/Caches/Google/Chrome\ Canary"]; then
+    if [-d "Users/$USER/Library/Caches/Google/Chrome\ Canary"]; then
         if user_response "I found Chrome Canary. Do you want move its cache?"; then
             /bin/rm -rf ~/Library/Caches/Google/Chrome\ Canary/*
             /bin/mkdir -p ${USERRAMDISK}/Google/Chrome\ Canary/Default
@@ -86,7 +86,7 @@ move_chrome_chanary_cache()
 # Safari Cache
 move_safari_cache()
 {
-    if [ -d "~/Library/Caches/com.apple.Safari" ]; then
+    if [ -d "Users/$User/Library/Caches/com.apple.Safari" ]; then
         if user_response "Do you want to move Safari cache?"; then
             /bin/rm -rf ~/Library/Caches/com.apple.Safari
             /bin/mkdir -p ${USERRAMDISK}/Apple/Safari
@@ -98,7 +98,7 @@ move_safari_cache()
 # iTunes Cache
 move_itunes_cache()
 {
-    /bin/rm -rf ~/Library/Caches/com.apple.iTunes
+    /bin/rm -rf /Users/$USER/Library/Caches/com.apple.iTunes
     /bin/mkdir -pv ${USERRAMDISK}/Apple/iTunes
     /bin/ln -v -s ${USERRAMDISK}/Apple/iTunes ~/Library/Caches/com.apple.iTunes
 }
