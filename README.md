@@ -71,3 +71,7 @@ TODO
 ===========
 Add support for persisting files in HDD (rsync) and restoring on system startup - will save a lot of time
 
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/zafarella/osx-ramdisk/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
