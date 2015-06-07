@@ -3,12 +3,13 @@
 # This is about to create a RAM disk in OS X and move the apps caches into it
 # to increase performance of those apps.
 # Performance gain is very significat, particularly for browsers and
-# especially for IDE
+# especially for IDEs like IntelliJ Idea
 #
 # Drawbacks and risks are that if RAM disk becomes full - performance will degrate
 # significantly.
 #
-# USE AT YOUR OWN RISK.
+# USE AT YOUR OWN RISK. PLEASE NOTE IT WILL NOT CHECK FOR CORRUPTED FILES
+# IF YOUR RAM IS BROKEN - DO NOT USE IT.
 #
 
 # The RAM amount you want to allocate for RAM disk. One of
@@ -37,6 +38,12 @@ user_response()
   esac
 }
 
+# Closes passed as arg app
+close_app()
+{
+    osascript -e "quit app \"${1}\""
+}
+
 mk_ram_disk()
 {
     # unmount if exists the RAM disk and mounts if doesn't
@@ -60,11 +67,13 @@ move_chrome_cache()
 {
     if [ -d "/Users/$USER/Library/Caches/Google/Chrome" ]; then
             if user_response "I found chrome. Do you want move its cache?" ; then
+                close_app "Google Chrome"
                 /bin/mkdir -p /tmp/Google/Chrome
                 /bin/mv ~/Library/Caches/Google/Chrome/* /tmp/Google/Chrome/
                 /bin/mkdir -pv ${USERRAMDISK}/Google/Chrome/Default
                 /bin/mv /tmp/Google/Chrome/ ${USERRAMDISK}/Google/Chrome
                 /bin/ln -v -s -f ${USERRAMDISK}/Google/Chrome/Default ~/Library/Caches/Google/Chrome/Default
+                /bin/rm -rf /tmp/Google/Chrome    
             fi
         else
             echo "No Google chrome folder has been found. Skiping"
@@ -113,7 +122,7 @@ move_idea_cache()
    echo "idea.log.path=$USERRAMDISK/Idea/logs" >> /Applications/IntelliJ\ IDEA\ 14.app/Contents/bin/idea.properties
 }
 
-# Intellij Idea
+# Intellij Idea Community Edition
 move_ideace_cache()
 {
    # todo add other versions support and CE edition
@@ -129,12 +138,6 @@ move_android_studio_cache()
 {
     echo "moving Android Studio cache";
     echo "Not implemented"
-}
-
-# Closes passed as arg app
-close_app()
-{
-    osascript -e "quit app \"${1}\""
 }
 
 # Open an application
@@ -155,7 +158,6 @@ hide_ramdisk()
 # Let's close the apps we moving caches for in case they are running.
 close_app "IntelliJ Idea 14"
 close_app "IntelliJ Idea 14 CE"
-close_app "Google Chrome"
 close_app "Safari"
 close_app "iTunes"
 # and create our RAM disk
