@@ -3,27 +3,21 @@ OS X RAM Disk
 
 Need really fast Java IDE or browser? Then keep reading.
 
-This app will create a [RAM disk](http://en.wikipedia.org/wiki/RAM_drive) in OS-X with specified size to 
+This app will create a [RAM disk](http://en.wikipedia.org/wiki/RAM_drive) in OS-X with specified size to
 store apps cache in RAM, which is known as SSD optimization - reducing disk IO or making browsing the web and
 programming using IntelliJ more enjoyable.
 
 Supported apps (you can add yours):
 
-1. IntelliJ Idea 14
+* IntelliJ Idea 14
+* Google Chrome
+* Google Canary
+* Safari
+* iTunes
+* todo: Android studio
+* your_app_goes_here
 
-1. Google Chrome
-
-1. Google Canary
-
-1. Safari
-
-1. iTunes
-
-1. todo: Android studio 
-
-1. your_app_goes_here
-
-The IntelliJ Idea is really fast after this. Be warned that for large projects you will need to have larger RAM Disk.
+The IntelliJ Idea is really fast after this. Be warned that for large projects you will need to have larger RAM Disk. I don't have exact numbers, sorry.
 
 If you observing performance degradation - revise how much memory you are using and may be adding more can help.
 By default script will create 4Gb RAM disk. If you need to change the size - edit createRAMDiskandMoveCaches.sh
@@ -35,6 +29,12 @@ Works on
 
 Give it a try before installing
 ===============================
+```bash
+$ curl -o startupRAMDiskandCacheMover.sh https://raw.githubusercontent.com/zafarella/OSX-RAMDisk/master/Contents/MacOS/startupRAMDiskandCacheMover.sh
+chmod +x startupRAMDiskandCacheMover.sh
+./startupRAMDiskandCacheMover.sh
+```
+or
 ```
 git clone git@github.com:zafarella/OSX-RAMDisk.git
 OSX-RAMDisk/Contents/MacOS/startupRAMDiskandCacheMover.sh
@@ -65,6 +65,6 @@ or manually do following
 Close the chrome, idea or any other application you configured to use ram disk.
 ```
    rm /usr/local/bin/ChromeRamDisk.sh
-   launchctl unload -w ~/Library/LaunchAgents/OSXRamDisk.plist 
+   launchctl unload -w ~/Library/LaunchAgents/OSXRamDisk.plist
    rm ~/Library/LaunchAgents/OSXRamDisk.plist
 ```
