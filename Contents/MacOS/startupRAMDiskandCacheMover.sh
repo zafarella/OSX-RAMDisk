@@ -1,5 +1,7 @@
 #!/usr/bin/env bash -x
 
+# Copyright Zafar Khaydarov
+#
 # This is about to create a RAM disk in OS X and move the apps caches into it
 # to increase performance of those apps.
 # Performance gain is very significat, particularly for browsers and
@@ -15,13 +17,14 @@
 # The RAM amount you want to allocate for RAM disk. One of
 # 1024 2048 3072 4096 5120 6144
 # todo: set default value to 1/4 of RAM
-ramfs_size_mb=4096
+
+ramfs_size_mb=(`sysctl hw.memsize | awk '{print [}']` / 1073741824) / 4
 mount_point=/Volumes/ramdisk
 ramfs_size_sectors=$((${ramfs_size_mb}*1024*1024/512))
 ramdisk_device=`hdid -nomount ram://${ramfs_size_sectors}`
 USERRAMDISK="$mount_point/$USER"
 
-# Checks user agreenes
+# Checks user response.
 user_response()
 {
  read -p " $1 [y/n]" ${response}
@@ -38,7 +41,9 @@ user_response()
   esac
 }
 
-# Closes passed as arg app
+#
+# Closes passed as arg app by name
+#
 close_app()
 {
     osascript -e "quit app \"${1}\""
@@ -66,17 +71,17 @@ mk_ram_disk()
 move_chrome_cache()
 {
     if [ -d "/Users/$USER/Library/Caches/Google/Chrome" ]; then
-            if user_response "I found chrome. Do you want move its cache?" ; then
+            if user_response "I found chrome. Do you want me to move its cache?" ; then
                 close_app "Google Chrome"
                 /bin/mkdir -p /tmp/Google/Chrome
                 /bin/mv ~/Library/Caches/Google/Chrome/* /tmp/Google/Chrome/
                 /bin/mkdir -pv ${USERRAMDISK}/Google/Chrome/Default
                 /bin/mv /tmp/Google/Chrome/ ${USERRAMDISK}/Google/Chrome
                 /bin/ln -v -s -f ${USERRAMDISK}/Google/Chrome/Default ~/Library/Caches/Google/Chrome/Default
-                /bin/rm -rf /tmp/Google/Chrome    
+                /bin/rm -rf /tmp/Google/Chrome
             fi
         else
-            echo "No Google chrome folder has been found. Skiping"
+            echo "No Google chrome folder has been found. Skiping."
     fi
 }
 

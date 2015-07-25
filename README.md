@@ -1,7 +1,9 @@
 OS X RAM Disk
 ================
 
-This app will create a [RAM disk](http://en.wikipedia.org/wiki/RAM_drive) with specified size to 
+Need really fast Java IDE or browser? Then keep reading.
+
+This app will create a [RAM disk](http://en.wikipedia.org/wiki/RAM_drive) in OS-X with specified size to 
 store apps cache in RAM, which is known as SSD optimization - reducing disk IO or making browsing the web and
 programming using IntelliJ more enjoyable.
 
@@ -35,7 +37,7 @@ Give it a try before installing
 ===============================
 ```
 git clone git@github.com:zafarella/OSX-RAMDisk.git
-./startupRAMDiskandCacheMover.sh
+OSX-RAMDisk/Contents/MacOS/startupRAMDiskandCacheMover.sh
 ```
 
 Installation
@@ -66,8 +68,3 @@ Close the chrome, idea or any other application you configured to use ram disk.
    launchctl unload -w ~/Library/LaunchAgents/OSXRamDisk.plist 
    rm ~/Library/LaunchAgents/OSXRamDisk.plist
 ```
-
-TODO
-===========
-Add support for persisting files in HDD (rsync) and restoring on system startup - will save a lot of time
-
