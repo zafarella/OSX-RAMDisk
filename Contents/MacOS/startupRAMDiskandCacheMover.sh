@@ -1,5 +1,7 @@
 #!/usr/bin/env bash -x
 
+#set -u
+
 # Copyright Zafar Khaydarov
 #
 # This is about to create a RAM disk in OS X and move the apps caches into it
@@ -18,7 +20,8 @@
 # 1024 2048 3072 4096 5120 6144
 # todo: set default value to 1/4 of RAM
 
-ramfs_size_mb=(`sysctl hw.memsize | awk '{print [}']` / 1073741824) / 4
+ramfs_size_mb=$(sysctl hw.memsize | awk '{print $2;}') 
+ramfs_size_mb=$(( ${ramfs_size_mb} / 1073741824 / 4))
 mount_point=/Volumes/ramdisk
 ramfs_size_sectors=$((${ramfs_size_mb}*1024*1024/512))
 ramdisk_device=`hdid -nomount ram://${ramfs_size_sectors}`
@@ -63,8 +66,8 @@ mk_ram_disk()
 }
 
 # ------------------------------------------------------
-# Application which needs the cache to be moved to RAM
-# add yours at the end.
+# Applications which needs the cache to be moved to RAM
+# Add yours at the end.
 # -------------------------------------------------------
 
 # Google Chrome Cache
@@ -112,9 +115,11 @@ move_safari_cache()
 # iTunes Cache
 move_itunes_cache()
 {
-    /bin/rm -rf /Users/$USER/Library/Caches/com.apple.iTunes
-    /bin/mkdir -pv ${USERRAMDISK}/Apple/iTunes
-    /bin/ln -v -s ${USERRAMDISK}/Apple/iTunes ~/Library/Caches/com.apple.iTunes
+    if [-d "${USER}/Library/Caches/com.apple.iTunes"]; then
+        /bin/rm -rf /Users/${USER}/Library/Caches/com.apple.iTunes
+        /bin/mkdir -pv ${USERRAMDISK}/Apple/iTunes
+        /bin/ln -v -s ${USERRAMDISK}/Apple/iTunes ~/Library/Caches/com.apple.iTunes
+    fi
 }
 
 # Intellij Idea
