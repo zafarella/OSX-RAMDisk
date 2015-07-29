@@ -17,10 +17,9 @@
 #
 
 # The RAM amount you want to allocate for RAM disk. One of
-# 1024 2048 3072 4096 5120 6144
-# todo: set default value to 1/4 of RAM
+# 1024 2048 3072 4096 5120 6144 7168 8192
 
-ramfs_size_mb=$(sysctl hw.memsize | awk '{print $2;}') 
+ramfs_size_mb=$(sysctl hw.memsize | awk '{print $2;}')
 ramfs_size_mb=$(( ${ramfs_size_mb} / 1073741824 / 4))
 mount_point=/Volumes/ramdisk
 ramfs_size_sectors=$((${ramfs_size_mb}*1024*1024/512))
@@ -63,6 +62,33 @@ mk_ram_disk()
     # Hide RAM disk - we don't really need it to be annoiyng in finder.
     # comment out should you need it.
     hide_ramdisk
+}
+
+# adds rsync to be executed each 5 min for current user
+add_rsync_to_cron()
+{
+    #todo fixme
+    crontab -l | { cat; echo "5 * * * * rsync"; } | crontab -
+}
+
+# Open an application
+open_app()
+{
+     osascript -e "tell app \"${1}\" to activate"
+}
+
+# Hide RamDisk directory
+hide_ramdisk()
+{
+    /usr/bin/chflags hidden ${mount_point}
+}
+
+# Checks that we have
+# all required utils before proceeding
+check_requirements()
+{
+ hash rsync 2>/dev/null || { echo >&2 "No rsync has been found.  Aborting. If you use brew install using: 'brew install rsync'"; exit 1; }
+ hash newfs_hfs 2>/dev/null || { echo >&2 "No newfs_hfs has been found.  Aborting."; exit 1; }
 }
 
 # ------------------------------------------------------
@@ -148,18 +174,6 @@ move_android_studio_cache()
 {
     echo "moving Android Studio cache";
     echo "Not implemented"
-}
-
-# Open an application
-open_app()
-{
-     osascript -e "tell app \"${1}\" to activate"
-}
-
-# Hide RamDisk directory
-hide_ramdisk()
-{
-    /usr/bin/chflags hidden ${mount_point}
 }
 
 # -----------------------------------------------------------------------------------
