@@ -91,12 +91,24 @@ check_requirements()
  hash newfs_hfs 2>/dev/null || { echo >&2 "No newfs_hfs has been found.  Aborting."; exit 1; }
 }
 
+#
+# Check existnce of the string in file.
+#
+check_string_in_file()
+{
+    if [ grep "${1}" -eq 0]; then
+        echo ;
+    fi
+}
+
 # ------------------------------------------------------
 # Applications which needs the cache to be moved to RAM
 # Add yours at the end.
 # -------------------------------------------------------
 
+#
 # Google Chrome Cache
+#
 move_chrome_cache()
 {
     if [ -d "/Users/$USER/Library/Caches/Google/Chrome" ]; then
@@ -114,7 +126,9 @@ move_chrome_cache()
     fi
 }
 
+#
 # Chrome Canary Cache
+#
 move_chrome_chanary_cache()
 {
     if [-d "Users/$USER/Library/Caches/Google/Chrome\ Canary"]; then
@@ -126,7 +140,9 @@ move_chrome_chanary_cache()
     fi
 }
 
+#
 # Safari Cache
+#
 move_safari_cache()
 {
     if [ -d "Users/$User/Library/Caches/com.apple.Safari" ]; then
@@ -138,17 +154,21 @@ move_safari_cache()
     fi
 }
 
+#
 # iTunes Cache
+#
 move_itunes_cache()
 {
-    if [-d "${USER}/Library/Caches/com.apple.iTunes"]; then
+    if [ -d "${USER}/Library/Caches/com.apple.iTunes" ]; then
         /bin/rm -rf /Users/${USER}/Library/Caches/com.apple.iTunes
         /bin/mkdir -pv ${USERRAMDISK}/Apple/iTunes
         /bin/ln -v -s ${USERRAMDISK}/Apple/iTunes ~/Library/Caches/com.apple.iTunes
     fi
 }
 
+#
 # Intellij Idea
+#
 move_idea_cache()
 {
    # make a backup of config - will need it when uninstalling
@@ -158,7 +178,9 @@ move_idea_cache()
    echo "idea.log.path=$USERRAMDISK/Idea/logs" >> /Applications/IntelliJ\ IDEA\ 14.app/Contents/bin/idea.properties
 }
 
+#
 # Intellij Idea Community Edition
+#
 move_ideace_cache()
 {
    # todo add other versions support and CE edition
@@ -169,16 +191,32 @@ move_ideace_cache()
    echo "idea.log.path=$USERRAMDISK/Idea/logs" >> /Applications/IntelliJ\ IDEA\ 14\ CE.app/Contents/bin/idea.properties
 }
 
+#
 # todo Android Studio
+#
 move_android_studio_cache()
 {
     echo "moving Android Studio cache";
     echo "Not implemented"
 }
 
+#
+# JetBrain Webstorm
+#
+move_webstorm_cache()
+{
+   # make a backup of config - will need it when uninstalling
+   cp -f /Applications/WebStorm.app/Contents/bin/idea.properties /Applications/WebStorm.app/Contents/bin/idea.properties.back
+   # Idea will create those dirs
+   echo "idea.system.path=$USERRAMDISK/Webstorm" >> /Applications/WebStorm.app/Contents/bin/idea.properties
+   echo "idea.log.path=$USERRAMDISK/Webstorm/logs" >> /Applications/WebStorm.app/Contents/bin/idea.properties
+}
+
 # -----------------------------------------------------------------------------------
 # The entry point
 # -----------------------------------------------------------------------------------
+check_requirements
+
 # Let's close the apps we moving caches for in case they are running.
 close_app "IntelliJ Idea 14"
 close_app "IntelliJ Idea 14 CE"
@@ -192,7 +230,7 @@ move_safari_cache
 move_idea_cache
 move_ideace_cache
 move_itunes_cache
-echo "All good - I have done my job"
+echo "All good - I have done my job."
 #
 # open_app "Google Chrome"
 # -----------------------------------------------------------------------------------
