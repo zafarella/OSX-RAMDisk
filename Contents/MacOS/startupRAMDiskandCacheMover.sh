@@ -20,7 +20,11 @@
 # 1024 2048 3072 4096 5120 6144 7168 8192
 
 ramfs_size_mb=$(sysctl hw.memsize | awk '{print $2;}')
-ramfs_size_mb=$(( ${ramfs_size_mb} / 1073741824 / 4))
+ramfs_size_mb=$(( ${ramfs_size_mb} / 1024 / 1024 / 4))
+
+echo " ram to be allocated ${ramfs_size_mb}"
+user_response "continue?"
+
 mount_point=/Volumes/ramdisk
 ramfs_size_sectors=$((${ramfs_size_mb}*1024*1024/512))
 ramdisk_device=`hdid -nomount ram://${ramfs_size_sectors}`
@@ -96,7 +100,7 @@ check_requirements()
 #
 check_string_in_file()
 {
-    if [ grep "${1}" -eq 0]; then
+    if [ grep "${1}" -eq 0 ]; then
         echo ;
     fi
 }
