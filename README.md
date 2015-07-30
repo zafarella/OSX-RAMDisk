@@ -9,12 +9,12 @@ programming using IntelliJ more enjoyable.
 
 Supported apps (you can add yours):
 
-* IntelliJ Idea 14
-* Google Chrome
-* Google Canary
+* [IntelliJ Idea 14] (https://www.jetbrains.com/idea/download/)
+* [Google Chrome] (https://support.google.com/chrome/answer/95346?hl=en)
+* [Google Canary] (https://www.google.com/chrome/browser/canary.html)
 * Safari
 * iTunes
-* todo: Android studio
+* todo: [Android studio] (http://developer.android.com/sdk/index.html)
 * your_app_goes_here
 
 The IntelliJ Idea is really fast after this. Be warned that for large projects you will need to have larger RAM Disk. I don't have exact numbers, sorry.
@@ -54,7 +54,7 @@ Manual Installation
 cp OSXRamDisk.plist ~/Library/LaunchAgents
 cp createRAMDiskandMoveCaches.sh /usr/local/bin
 # note - it will close Chrome, safari idea
-/usr/local/bin/createRAMDiskandMoveCaches.sh
+/usr/local/bin/startupRAMDiskandCacheMover.sh
 ```
 
 Uninstall
@@ -64,7 +64,7 @@ or manually do following
 
 Close the chrome, idea or any other application you configured to use ram disk.
 ```
-   rm /usr/local/bin/ChromeRamDisk.sh
+   rm /usr/local/bin/startupRAMDiskandCacheMover.sh
    launchctl unload -w ~/Library/LaunchAgents/OSXRamDisk.plist
    rm ~/Library/LaunchAgents/OSXRamDisk.plist
 ```

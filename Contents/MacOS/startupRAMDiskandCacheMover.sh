@@ -22,13 +22,11 @@
 ramfs_size_mb=$(sysctl hw.memsize | awk '{print $2;}')
 ramfs_size_mb=$(( ${ramfs_size_mb} / 1024 / 1024 / 4))
 
-echo " ram to be allocated ${ramfs_size_mb}"
-user_response "continue?"
-
 mount_point=/Volumes/ramdisk
 ramfs_size_sectors=$((${ramfs_size_mb}*1024*1024/512))
 ramdisk_device=`hdid -nomount ram://${ramfs_size_sectors}`
-USERRAMDISK="$mount_point/$USER"
+USERRAMDISK="$mount_point/${USER}"
+
 
 # Checks user response.
 user_response()
@@ -115,7 +113,7 @@ check_string_in_file()
 #
 move_chrome_cache()
 {
-    if [ -d "/Users/$USER/Library/Caches/Google/Chrome" ]; then
+    if [ -d "/Users/${USER}/Library/Caches/Google/Chrome" ]; then
             if user_response "I found chrome. Do you want me to move its cache?" ; then
                 close_app "Google Chrome"
                 /bin/mkdir -p /tmp/Google/Chrome
@@ -135,7 +133,7 @@ move_chrome_cache()
 #
 move_chrome_chanary_cache()
 {
-    if [-d "Users/$USER/Library/Caches/Google/Chrome\ Canary"]; then
+    if [-d "Users/${USER}/Library/Caches/Google/Chrome\ Canary"]; then
         if user_response "I found Chrome Canary. Do you want move its cache?"; then
             /bin/rm -rf ~/Library/Caches/Google/Chrome\ Canary/*
             /bin/mkdir -p ${USERRAMDISK}/Google/Chrome\ Canary/Default
@@ -149,7 +147,7 @@ move_chrome_chanary_cache()
 #
 move_safari_cache()
 {
-    if [ -d "Users/$User/Library/Caches/com.apple.Safari" ]; then
+    if [ -d "Users/${USER}/Library/Caches/com.apple.Safari" ]; then
         if user_response "Do you want to move Safari cache?"; then
             /bin/rm -rf ~/Library/Caches/com.apple.Safari
             /bin/mkdir -p ${USERRAMDISK}/Apple/Safari
@@ -178,8 +176,8 @@ move_idea_cache()
    # make a backup of config - will need it when uninstalling
    cp -f /Applications/IntelliJ\ IDEA\ 14.app/Contents/bin/idea.properties /Applications/IntelliJ\ IDEA\ 14.app/Contents/bin/idea.properties.back
    # Idea will create those dirs
-   echo "idea.system.path=$USERRAMDISK/Idea" >> /Applications/IntelliJ\ IDEA\ 14.app/Contents/bin/idea.properties
-   echo "idea.log.path=$USERRAMDISK/Idea/logs" >> /Applications/IntelliJ\ IDEA\ 14.app/Contents/bin/idea.properties
+   echo "idea.system.path=${USERRAMDISK}/Idea" >> /Applications/IntelliJ\ IDEA\ 14.app/Contents/bin/idea.properties
+   echo "idea.log.path=${USERRAMDISK}/Idea/logs" >> /Applications/IntelliJ\ IDEA\ 14.app/Contents/bin/idea.properties
 }
 
 #
@@ -191,8 +189,8 @@ move_ideace_cache()
    # make a backup of config - will need it when uninstalling
    cp -f /Applications/IntelliJ\ IDEA\ 14\ CE.app/Contents/bin/idea.properties /Applications/IntelliJ\ IDEA\ 14\ CE.app/Contents/bin/idea.properties.back
    # Idea will create those dirs
-   echo "idea.system.path=$USERRAMDISK/Idea" >> /Applications/IntelliJ\ IDEA\ 14\ CE.app/Contents/bin/idea.properties
-   echo "idea.log.path=$USERRAMDISK/Idea/logs" >> /Applications/IntelliJ\ IDEA\ 14\ CE.app/Contents/bin/idea.properties
+   echo "idea.system.path=${USERRAMDISK}/Idea" >> /Applications/IntelliJ\ IDEA\ 14\ CE.app/Contents/bin/idea.properties
+   echo "idea.log.path=${USERRAMDISK}/Idea/logs" >> /Applications/IntelliJ\ IDEA\ 14\ CE.app/Contents/bin/idea.properties
 }
 
 #
@@ -212,8 +210,8 @@ move_webstorm_cache()
    # make a backup of config - will need it when uninstalling
    cp -f /Applications/WebStorm.app/Contents/bin/idea.properties /Applications/WebStorm.app/Contents/bin/idea.properties.back
    # Idea will create those dirs
-   echo "idea.system.path=$USERRAMDISK/Webstorm" >> /Applications/WebStorm.app/Contents/bin/idea.properties
-   echo "idea.log.path=$USERRAMDISK/Webstorm/logs" >> /Applications/WebStorm.app/Contents/bin/idea.properties
+   echo "idea.system.path=${USERRAMDISK}/Webstorm" >> /Applications/WebStorm.app/Contents/bin/idea.properties
+   echo "idea.log.path=${USERRAMDISK}/Webstorm/logs" >> /Applications/WebStorm.app/Contents/bin/idea.properties
 }
 
 # -----------------------------------------------------------------------------------
