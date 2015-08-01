@@ -1,7 +1,5 @@
 #!/usr/bin/env bash -x
 
-#set -u
-
 # Copyright Zafar Khaydarov
 #
 # This is about to create a RAM disk in OS X and move the apps caches into it
@@ -18,9 +16,10 @@
 
 # The RAM amount you want to allocate for RAM disk. One of
 # 1024 2048 3072 4096 5120 6144 7168 8192
+# By default will user 1/4 of your RAM
 
 ramfs_size_mb=$(sysctl hw.memsize | awk '{print $2;}')
-ramfs_size_mb=$(( ${ramfs_size_mb} / 1024 / 1024 / 4))
+ramfs_size_mb=$((${ramfs_size_mb} / 1024 / 1024 / 4))
 
 mount_point=/Volumes/ramdisk
 ramfs_size_sectors=$((${ramfs_size_mb}*1024*1024/512))
@@ -61,9 +60,11 @@ mk_ram_disk()
     mkdir -p ${mount_point}
     mount -o noatime -t hfs ${ramdisk_device} ${mount_point}
 
+    echo "created RAM disk."
     # Hide RAM disk - we don't really need it to be annoiyng in finder.
     # comment out should you need it.
     hide_ramdisk
+    echo "RAM disk hidden"
 }
 
 # adds rsync to be executed each 5 min for current user
@@ -98,8 +99,10 @@ check_requirements()
 #
 check_string_in_file()
 {
-    if [ grep "${1}" -eq 0 ]; then
-        echo ;
+    if [ grep "${1}" "${2}" -eq 0 ]; then
+        return 0;
+    else
+        return 1;
     fi
 }
 
@@ -133,8 +136,9 @@ move_chrome_cache()
 #
 move_chrome_chanary_cache()
 {
-    if [-d "Users/${USER}/Library/Caches/Google/Chrome\ Canary"]; then
+    if [-d "/Users/${USER}/Library/Caches/Google/Chrome Canary"]; then
         if user_response "I found Chrome Canary. Do you want move its cache?"; then
+            close_app "Chrome Canary"
             /bin/rm -rf ~/Library/Caches/Google/Chrome\ Canary/*
             /bin/mkdir -p ${USERRAMDISK}/Google/Chrome\ Canary/Default
             /bin/ln -s ${USERRAMDISK}/Google/Chrome\ Canary/Default ~/Library/Caches/Google/Chrome\ Canary/Default
@@ -147,11 +151,13 @@ move_chrome_chanary_cache()
 #
 move_safari_cache()
 {
-    if [ -d "Users/${USER}/Library/Caches/com.apple.Safari" ]; then
+    if [ -d "/Users/${USER}/Library/Caches/com.apple.Safari" ]; then
         if user_response "Do you want to move Safari cache?"; then
+            close_app "Safari"
             /bin/rm -rf ~/Library/Caches/com.apple.Safari
             /bin/mkdir -p ${USERRAMDISK}/Apple/Safari
             /bin/ln -s ${USERRAMDISK}/Apple/Safari ~/Library/Caches/com.apple.Safari
+            echo "Moved Safari cache."
         fi
     fi
 }
@@ -161,10 +167,12 @@ move_safari_cache()
 #
 move_itunes_cache()
 {
-    if [ -d "${USER}/Library/Caches/com.apple.iTunes" ]; then
+    if [ -d "/Users/${USER}/Library/Caches/com.apple.iTunes" ]; then
+        close_app "iTunes"
         /bin/rm -rf /Users/${USER}/Library/Caches/com.apple.iTunes
         /bin/mkdir -pv ${USERRAMDISK}/Apple/iTunes
         /bin/ln -v -s ${USERRAMDISK}/Apple/iTunes ~/Library/Caches/com.apple.iTunes
+        echo "Moved iTunes cache."
     fi
 }
 
@@ -173,11 +181,15 @@ move_itunes_cache()
 #
 move_idea_cache()
 {
-   # make a backup of config - will need it when uninstalling
-   cp -f /Applications/IntelliJ\ IDEA\ 14.app/Contents/bin/idea.properties /Applications/IntelliJ\ IDEA\ 14.app/Contents/bin/idea.properties.back
-   # Idea will create those dirs
-   echo "idea.system.path=${USERRAMDISK}/Idea" >> /Applications/IntelliJ\ IDEA\ 14.app/Contents/bin/idea.properties
-   echo "idea.log.path=${USERRAMDISK}/Idea/logs" >> /Applications/IntelliJ\ IDEA\ 14.app/Contents/bin/idea.properties
+    if [ -d "/Applications/IntelliJ IDEA 14.app" ]; then
+       close_app "IntelliJ Idea 14"
+       # make a backup of config - will need it when uninstalling
+       cp -f /Applications/IntelliJ\ IDEA\ 14.app/Contents/bin/idea.properties /Applications/IntelliJ\ IDEA\ 14.app/Contents/bin/idea.properties.back
+       # Idea will create those dirs
+       echo "idea.system.path=${USERRAMDISK}/Idea" >> /Applications/IntelliJ\ IDEA\ 14.app/Contents/bin/idea.properties
+       echo "idea.log.path=${USERRAMDISK}/Idea/logs" >> /Applications/IntelliJ\ IDEA\ 14.app/Contents/bin/idea.properties
+       echo "Moved IntelliJ cache."
+    fi
 }
 
 #
@@ -186,20 +198,32 @@ move_idea_cache()
 move_ideace_cache()
 {
    # todo add other versions support and CE edition
-   # make a backup of config - will need it when uninstalling
-   cp -f /Applications/IntelliJ\ IDEA\ 14\ CE.app/Contents/bin/idea.properties /Applications/IntelliJ\ IDEA\ 14\ CE.app/Contents/bin/idea.properties.back
-   # Idea will create those dirs
-   echo "idea.system.path=${USERRAMDISK}/Idea" >> /Applications/IntelliJ\ IDEA\ 14\ CE.app/Contents/bin/idea.properties
-   echo "idea.log.path=${USERRAMDISK}/Idea/logs" >> /Applications/IntelliJ\ IDEA\ 14\ CE.app/Contents/bin/idea.properties
+   if [ -d "/Applications/IntelliJ IDEA 14 CE.app" ]; then
+        close_app "IntelliJ Idea 14 CE"
+        # make a backup of config - will need it when uninstalling
+        cp -f /Applications/IntelliJ\ IDEA\ 14\ CE.app/Contents/bin/idea.properties /Applications/IntelliJ\ IDEA\ 14\ CE.app/Contents/bin/idea.properties.back
+        # Idea will create those dirs
+        echo "idea.system.path=${USERRAMDISK}/Idea" >> /Applications/IntelliJ\ IDEA\ 14\ CE.app/Contents/bin/idea.properties
+        echo "idea.log.path=${USERRAMDISK}/Idea/logs" >> /Applications/IntelliJ\ IDEA\ 14\ CE.app/Contents/bin/idea.properties
+        echo "Moved IntelliJ cache."
+   fi
 }
 
 #
-# todo Android Studio
+# Android Studio
 #
 move_android_studio_cache()
 {
-    echo "moving Android Studio cache";
-    echo "Not implemented"
+ close_app "Android Studio"
+ echo "moving Android Studio cache";
+   if [ -d "/Applications/Android Studio.app" ]; then
+        # make a backup of config - will need it when uninstalling
+        cp -f /Applications/Android\ Studio.app/Contents/bin/idea.properties /Applications/Android\ Studio.app/Contents/bin/idea.properties.back
+        # Idea will create those dirs
+        echo "idea.system.path=${USERRAMDISK}/AndroidStudio" >> /Applications/Android\ Studio.app/Contents/bin/idea.properties
+        echo "idea.log.path=${USERRAMDISK}/AndroidStudio/logs" >> /Applications/Android\ Studio.app/Contents/bin/idea.properties
+        echo "Moved Android cache."
+   fi
 }
 
 #
@@ -207,11 +231,14 @@ move_android_studio_cache()
 #
 move_webstorm_cache()
 {
-   # make a backup of config - will need it when uninstalling
-   cp -f /Applications/WebStorm.app/Contents/bin/idea.properties /Applications/WebStorm.app/Contents/bin/idea.properties.back
-   # Idea will create those dirs
-   echo "idea.system.path=${USERRAMDISK}/Webstorm" >> /Applications/WebStorm.app/Contents/bin/idea.properties
-   echo "idea.log.path=${USERRAMDISK}/Webstorm/logs" >> /Applications/WebStorm.app/Contents/bin/idea.properties
+ echo "Moving webStorm cache"
+   if [ -d "/Applications/WebStorm.app" ]; then
+       # make a backup of config - will need it when uninstalling
+       cp -f /Applications/WebStorm.app/Contents/bin/idea.properties /Applications/WebStorm.app/Contents/bin/idea.properties.back
+       #todo add checking for string existance
+       echo "idea.system.path=${USERRAMDISK}/Webstorm" >> /Applications/WebStorm.app/Contents/bin/idea.properties
+       echo "idea.log.path=${USERRAMDISK}/Webstorm/logs" >> /Applications/WebStorm.app/Contents/bin/idea.properties
+   fi
 }
 
 # -----------------------------------------------------------------------------------
@@ -219,11 +246,6 @@ move_webstorm_cache()
 # -----------------------------------------------------------------------------------
 check_requirements
 
-# Let's close the apps we moving caches for in case they are running.
-close_app "IntelliJ Idea 14"
-close_app "IntelliJ Idea 14 CE"
-close_app "Safari"
-close_app "iTunes"
 # and create our RAM disk
 mk_ram_disk
 # move the caches
@@ -232,7 +254,7 @@ move_safari_cache
 move_idea_cache
 move_ideace_cache
 move_itunes_cache
+move_android_studio_cache
 echo "All good - I have done my job."
-#
-# open_app "Google Chrome"
 # -----------------------------------------------------------------------------------
+
