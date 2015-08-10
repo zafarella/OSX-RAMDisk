@@ -30,7 +30,7 @@ USERRAMDISK="$mount_point/${USER}"
 # Checks user response.
 user_response()
 {
- read -p " $1 [y/n]" ${response}
+ read -p " ${1} [y/n]" ${response}
   case ${response} in
     [yY][eE][sS]|[yY]|"")
       true
@@ -39,7 +39,7 @@ user_response()
       false
       ;;
     *)
-      user_response $@
+      user_response ${@}
       ;;
   esac
 }
@@ -99,7 +99,7 @@ check_requirements()
 #
 check_string_in_file()
 {
-    if [ grep "${1}" "${2}" -eq 0 ]; then
+    if  grep "${1}" "${2}" == 0; then
         return 0;
     else
         return 1;
@@ -136,7 +136,7 @@ move_chrome_cache()
 #
 move_chrome_chanary_cache()
 {
-    if [-d "/Users/${USER}/Library/Caches/Google/Chrome Canary"]; then
+    if [ -d "/Users/${USER}/Library/Caches/Google/Chrome Canary" ]; then
         if user_response "I found Chrome Canary. Do you want move its cache?"; then
             close_app "Chrome Canary"
             /bin/rm -rf ~/Library/Caches/Google/Chrome\ Canary/*
