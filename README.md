@@ -14,13 +14,16 @@ Supported apps (you can add yours):
 * [Google Canary] (https://www.google.com/chrome/browser/canary.html)
 * Safari
 * iTunes
-* todo: [Android studio] (http://developer.android.com/sdk/index.html)
+* [Android studio] (http://developer.android.com/sdk/index.html)
+* [WebShtorm] (https://www.jetbrains.com/webstorm/)
 * your_app_goes_here
 
-The IntelliJ Idea is really fast after this. Be warned that for large projects you will need to have larger RAM Disk. I don't have exact numbers, sorry.
+The IntelliJ Idea is really fast after this. Be warned that for large projects you will 
+need to have larger RAM Disk. I don't have exact numbers, sorry.
 
 If you observing performance degradation - revise how much memory you are using and may be adding more can help.
-By default script will create 4Gb RAM disk. If you need to change the size - edit createRAMDiskandMoveCaches.sh
+By default script will create disk of 1/4 of your RAM . 
+If you need to change the size - edit createRAMDiskandMoveCaches.sh
 
 Compatibility
 ============
@@ -42,6 +45,7 @@ OSX-RAMDisk/Contents/MacOS/startupRAMDiskandCacheMover.sh
 
 Installation
 ============
+Do not use it now - the startup script does not work yet - work in progress
 ```
 git clone git@github.com:zafarella/OSX-RAMDisk.git
 cd OSX-RAMDisk
@@ -52,7 +56,7 @@ Manual Installation
 ------------------
 ```
 cp OSXRamDisk.plist ~/Library/LaunchAgents
-cp createRAMDiskandMoveCaches.sh /usr/local/bin
+cp startupRAMDiskandCacheMover.sh /usr/local/bin
 # note - it will close Chrome, safari idea
 /usr/local/bin/startupRAMDiskandCacheMover.sh
 ```
