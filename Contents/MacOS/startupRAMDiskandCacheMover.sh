@@ -16,7 +16,7 @@
 
 # The RAM amount you want to allocate for RAM disk. One of
 # 1024 2048 3072 4096 5120 6144 7168 8192
-# By default will user 1/4 of your RAM
+# By default will use 1/4 of your RAM
 
 ramfs_size_mb=$(sysctl hw.memsize | awk '{print $2;}')
 ramfs_size_mb=$((${ramfs_size_mb} / 1024 / 1024 / 4))
