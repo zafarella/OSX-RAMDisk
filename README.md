@@ -18,12 +18,12 @@ Supported apps (you can add yours):
 * [WebShtorm] (https://www.jetbrains.com/webstorm/)
 * your_app_goes_here
 
-The IntelliJ Idea is really fast after this. Be warned that for large projects you will 
+The IntelliJ Idea is really fast after this. Be warned that for large projects you will
 need to have larger RAM Disk. I don't have exact numbers, sorry.
 
 If you observing performance degradation - revise how much memory you are using and may be adding more can help.
-By default script will create disk of 1/4 of your RAM . 
-If you need to change the size - edit createRAMDiskandMoveCaches.sh
+By default script will create disk of 1/4 of your RAM .
+If you need to change the size - edit startupRAMDiskandCacheMover.sh
 
 Compatibility
 ============

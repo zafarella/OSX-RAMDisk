@@ -4,7 +4,7 @@
 #
 # This is about to create a RAM disk in OS X and move the apps caches into it
 # to increase performance of those apps.
-# Performance gain is very significat, particularly for browsers and
+# Performance gain is very significant, particularly for browsers and
 # especially for IDEs like IntelliJ Idea
 #
 # Drawbacks and risks are that if RAM disk becomes full - performance will degrate
@@ -257,4 +257,3 @@ move_itunes_cache
 move_android_studio_cache
 echo "All good - I have done my job."
 # -----------------------------------------------------------------------------------
-
