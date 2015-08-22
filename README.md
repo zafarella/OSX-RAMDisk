@@ -1,6 +1,8 @@
 OS X RAM Disk
 ================
 
+[![Join the chat at https://gitter.im/zafarella/OSX-RAMDisk](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/zafarella/OSX-RAMDisk?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Need really fast Java IDE or browser? Then keep reading.
 
 This app will create a [RAM disk](http://en.wikipedia.org/wiki/RAM_drive) in OS-X with specified size to
