@@ -25,6 +25,8 @@ If you observing performance degradation - revise how much memory you are using 
 By default script will create disk of 1/4 of your RAM .
 If you need to change the size - edit startupRAMDiskandCacheMover.sh
 
+Have something to discuss? 
+[![Join the chat at https://gitter.im/zafarella/OSX-RAMDisk](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/zafarella/OSX-RAMDisk?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 Compatibility
 ============
 Works on
