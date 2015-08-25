@@ -19,20 +19,25 @@ Supported apps (you can add yours):
 * [Clion] (https://www.jetbrains.com/clion/)
 * your_app_goes_here
 
-The IntelliJ Idea is really fast after this. Be warned that for large projects you will
-need to have larger RAM Disk. I don't have exact numbers, sorry.
+The IntelliJ Idea (or JetBrains IDEs) are really fast after this. Be warned that for large source base you will
+need to have more RAM Disk. I don't have exact numbers, sorry, because it can vary. Mine machine have 16G - it works
+good. 
 
 If you observing performance degradation - revise how much memory you are using and may be adding more can help.
-By default script will create disk of 1/4 of your RAM .
-If you need to change the size - edit startupRAMDiskandCacheMover.sh
+By default script will create disk of 1/4 size of your RAM.
+If you need to change the size - edit `startupRAMDiskandCacheMover.sh` header section.
 
 Have something to discuss? 
 [![Join the chat at https://gitter.im/zafarella/OSX-RAMDisk](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/zafarella/OSX-RAMDisk?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+If you have any issues - I am glad to have them reported in the issues tab.
+
 Compatibility
 ============
 Works on
+
 * MAC OS X 10.10.2 Yosemite
-- 
+
 > Note that you have to re-run the script in order to get the ram disk back after machine restart.
 > Currently it does not place it on startup.
 
