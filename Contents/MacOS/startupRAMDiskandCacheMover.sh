@@ -166,7 +166,7 @@ move_chrome_chanary_cache()
             /bin/ln -s ${USERRAMDISK}/Google/Chrome\ Canary/Default ~/Library/Caches/Google/Chrome\ Canary/Default
         fi
     fi
-}-
+}
 
 #
 # Safari Cache
