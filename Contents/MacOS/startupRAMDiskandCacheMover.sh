@@ -30,18 +30,18 @@ USERRAMDISK="$mount_point/${USER}"
 # Checks user response.
 user_response()
 {
- read -p " ${1} [y/n]" ${response}
-  case ${response} in
-    [yY][eE][sS]|[yY]|"")
-      true
-      ;;
-    [nN][oO]|[nN])
-      false
-      ;;
-    *)
-      user_response ${@}
-      ;;
-  esac
+    read -p " ${1} [y/n]" ${response}
+    case ${response} in
+        [yY][eE][sS]|[yY]|"")
+            true
+            ;;
+        [nN][oO]|[nN])
+            false
+            ;;
+        *)
+            user_response ${@}
+            ;;
+    esac
 }
 
 #
@@ -77,7 +77,7 @@ add_rsync_to_cron()
 # Open an application
 open_app()
 {
-     osascript -e "tell app \"${1}\" to activate"
+    osascript -e "tell app \"${1}\" to activate"
 }
 
 # Hide RamDisk directory
@@ -90,8 +90,8 @@ hide_ramdisk()
 # all required utils before proceeding
 check_requirements()
 {
- hash rsync 2>/dev/null || { echo >&2 "No rsync has been found.  Aborting. If you use brew install using: 'brew install rsync'"; exit 1; }
- hash newfs_hfs 2>/dev/null || { echo >&2 "No newfs_hfs has been found.  Aborting."; exit 1; }
+    hash rsync 2>/dev/null || { echo >&2 "No rsync has been found.  Aborting. If you use brew install using: 'brew install rsync'"; exit 1; }
+    hash newfs_hfs 2>/dev/null || { echo >&2 "No newfs_hfs has been found.  Aborting."; exit 1; }
 }
 
 #
@@ -106,6 +106,26 @@ check_string_in_file()
     fi
 }
 
+#
+# Check for the flag
+#
+check_for_flag()
+{
+    if [ -e ${1} ] ; then
+        return 0;
+    else
+        return 1;
+    fi
+}
+
+#
+# Creates flag indicating the apps cache has been moved.
+#
+make_flag()
+{
+    echo "" > /Applications/OSX-RAMDisk.app/${1}
+}
+
 # ------------------------------------------------------
 # Applications which needs the cache to be moved to RAM
 # Add yours at the end.
@@ -117,17 +137,19 @@ check_string_in_file()
 move_chrome_cache()
 {
     if [ -d "/Users/${USER}/Library/Caches/Google/Chrome" ]; then
-            if user_response "I found chrome. Do you want me to move its cache?" ; then
-                close_app "Google Chrome"
-                /bin/mkdir -p /tmp/Google/Chrome
-                /bin/mv ~/Library/Caches/Google/Chrome/* /tmp/Google/Chrome/
-                /bin/mkdir -pv ${USERRAMDISK}/Google/Chrome/Default
-                /bin/mv /tmp/Google/Chrome/ ${USERRAMDISK}/Google/Chrome
-                /bin/ln -v -s -f ${USERRAMDISK}/Google/Chrome/Default ~/Library/Caches/Google/Chrome/Default
-                /bin/rm -rf /tmp/Google/Chrome
-            fi
-        else
-            echo "No Google chrome folder has been found. Skiping."
+        if user_response "I found chrome. Do you want me to move its cache?" ; then
+            close_app "Google Chrome"
+            /bin/mkdir -p /tmp/Google/Chrome
+            /bin/mv ~/Library/Caches/Google/Chrome/* /tmp/Google/Chrome/
+            /bin/mkdir -pv ${USERRAMDISK}/Google/Chrome/Default
+            /bin/mv /tmp/Google/Chrome/ ${USERRAMDISK}/Google/Chrome
+            /bin/ln -v -s -f ${USERRAMDISK}/Google/Chrome/Default ~/Library/Caches/Google/Chrome/Default
+            /bin/rm -rf /tmp/Google/Chrome
+            # and let's create a flag for next run that we moved the cache.
+            echo "";
+        fi
+    else
+        echo "No Google chrome folder has been found. Skiping."
     fi
 }
 
@@ -144,7 +166,7 @@ move_chrome_chanary_cache()
             /bin/ln -s ${USERRAMDISK}/Google/Chrome\ Canary/Default ~/Library/Caches/Google/Chrome\ Canary/Default
         fi
     fi
-}
+}-
 
 #
 # Safari Cache
@@ -179,16 +201,17 @@ move_itunes_cache()
 #
 # Intellij Idea
 #
+# fixme - what if the version is not 14?
 move_idea_cache()
 {
     if [ -d "/Applications/IntelliJ IDEA 14.app" ]; then
-       close_app "IntelliJ Idea 14"
-       # make a backup of config - will need it when uninstalling
-       cp -f /Applications/IntelliJ\ IDEA\ 14.app/Contents/bin/idea.properties /Applications/IntelliJ\ IDEA\ 14.app/Contents/bin/idea.properties.back
-       # Idea will create those dirs
-       echo "idea.system.path=${USERRAMDISK}/Idea" >> /Applications/IntelliJ\ IDEA\ 14.app/Contents/bin/idea.properties
-       echo "idea.log.path=${USERRAMDISK}/Idea/logs" >> /Applications/IntelliJ\ IDEA\ 14.app/Contents/bin/idea.properties
-       echo "Moved IntelliJ cache."
+        close_app "IntelliJ Idea 14"
+        # make a backup of config - will need it when uninstalling
+        cp -f /Applications/IntelliJ\ IDEA\ 14.app/Contents/bin/idea.properties /Applications/IntelliJ\ IDEA\ 14.app/Contents/bin/idea.properties.back
+        # Idea will create those dirs
+        echo "idea.system.path=${USERRAMDISK}/Idea" >> /Applications/IntelliJ\ IDEA\ 14.app/Contents/bin/idea.properties
+        echo "idea.log.path=${USERRAMDISK}/Idea/logs" >> /Applications/IntelliJ\ IDEA\ 14.app/Contents/bin/idea.properties
+        echo "Moved IntelliJ cache."
     fi
 }
 
@@ -197,8 +220,8 @@ move_idea_cache()
 #
 move_ideace_cache()
 {
-   # todo add other versions support and CE edition
-   if [ -d "/Applications/IntelliJ IDEA 14 CE.app" ]; then
+    # todo add other versions support and CE edition
+    if [ -d "/Applications/IntelliJ IDEA 14 CE.app" ]; then
         close_app "IntelliJ Idea 14 CE"
         # make a backup of config - will need it when uninstalling
         cp -f /Applications/IntelliJ\ IDEA\ 14\ CE.app/Contents/bin/idea.properties /Applications/IntelliJ\ IDEA\ 14\ CE.app/Contents/bin/idea.properties.back
@@ -206,7 +229,7 @@ move_ideace_cache()
         echo "idea.system.path=${USERRAMDISK}/Idea" >> /Applications/IntelliJ\ IDEA\ 14\ CE.app/Contents/bin/idea.properties
         echo "idea.log.path=${USERRAMDISK}/Idea/logs" >> /Applications/IntelliJ\ IDEA\ 14\ CE.app/Contents/bin/idea.properties
         echo "Moved IntelliJ cache."
-   fi
+    fi
 }
 
 #
@@ -214,32 +237,37 @@ move_ideace_cache()
 #
 move_android_studio_cache()
 {
- close_app "Android Studio"
- echo "moving Android Studio cache";
-   if [ -d "/Applications/Android Studio.app" ]; then
+    close_app "Android Studio"
+    echo "moving Android Studio cache";
+    if [ -d "/Applications/Android Studio.app" ]; then
         # make a backup of config - will need it when uninstalling
         cp -f /Applications/Android\ Studio.app/Contents/bin/idea.properties /Applications/Android\ Studio.app/Contents/bin/idea.properties.back
         # Idea will create those dirs
         echo "idea.system.path=${USERRAMDISK}/AndroidStudio" >> /Applications/Android\ Studio.app/Contents/bin/idea.properties
         echo "idea.log.path=${USERRAMDISK}/AndroidStudio/logs" >> /Applications/Android\ Studio.app/Contents/bin/idea.properties
         echo "Moved Android cache."
-   fi
+    fi
 }
 
 #
-# JetBrain Webstorm
+# Clion
 #
-move_webstorm_cache()
+move_clion_cache()
 {
- echo "Moving webStorm cache"
-   if [ -d "/Applications/WebStorm.app" ]; then
-       # make a backup of config - will need it when uninstalling
-       cp -f /Applications/WebStorm.app/Contents/bin/idea.properties /Applications/WebStorm.app/Contents/bin/idea.properties.back
-       #todo add checking for string existance
-       echo "idea.system.path=${USERRAMDISK}/Webstorm" >> /Applications/WebStorm.app/Contents/bin/idea.properties
-       echo "idea.log.path=${USERRAMDISK}/Webstorm/logs" >> /Applications/WebStorm.app/Contents/bin/idea.properties
-   fi
+    if [ -d "/Applications/Clion.app" ]; then
+        if user_response "I found CLion. Do you want me to move its cache?" ; then
+            echo "moving Clion cache";
+            close_app "Clion"
+            # make a backup of config - will need it when uninstalling
+            cp -f /Applications/Clion.app/Contents/bin/idea.properties /Applications/Clion.app/Contents/bin/idea.properties.back
+            # Idea will create those dirs
+            echo "idea.system.path=${USERRAMDISK}/CLion" >> /Applications/Clion.app/Contents/bin/idea.properties
+            echo "idea.log.path=${USERRAMDISK}/Clion/logs" >> /Applications/Clion.app/Contents/bin/idea.properties
+            echo "Moved Clion cache."
+        fi
+    fi
 }
+
 
 # -----------------------------------------------------------------------------------
 # The entry point
@@ -255,5 +283,6 @@ move_idea_cache
 move_ideace_cache
 move_itunes_cache
 move_android_studio_cache
-echo "All good - I have done my job."
+move_clion_cache
+echo "All good - I have done my job. Your apps should fly."
 # -----------------------------------------------------------------------------------

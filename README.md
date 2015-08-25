@@ -16,6 +16,7 @@ Supported apps (you can add yours):
 * iTunes
 * [Android studio] (http://developer.android.com/sdk/index.html)
 * [WebShtorm] (https://www.jetbrains.com/webstorm/)
+* [Clion] (https://www.jetbrains.com/clion/)
 * your_app_goes_here
 
 The IntelliJ Idea is really fast after this. Be warned that for large projects you will
@@ -31,6 +32,10 @@ Compatibility
 ============
 Works on
 * MAC OS X 10.10.2 Yosemite
+
+> Note that you have to re-run the script in order to get the ram disk back.
+> Currently it doe not place it on startup.
+>
 
 Give it a try before installing
 ===============================
