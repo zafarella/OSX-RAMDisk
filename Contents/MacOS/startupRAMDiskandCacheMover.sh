@@ -304,5 +304,6 @@ move_ideace_cache
 move_itunes_cache
 move_android_studio_cache
 move_clion_cache
+move_appcode_cac
 echo "All good - I have done my job. Your apps should fly."
 # -----------------------------------------------------------------------------------
