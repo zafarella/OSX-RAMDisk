@@ -17,6 +17,7 @@ Supported apps (you can add yours):
 * [Android studio] (http://developer.android.com/sdk/index.html)
 * [WebShtorm] (https://www.jetbrains.com/webstorm/)
 * [Clion] (https://www.jetbrains.com/clion/)
+* [AppCode] (https://www.jetbrains.com/objc/)
 * your_app_goes_here
 
 The IntelliJ Idea (or JetBrains IDEs) are really fast after this. Be warned that for large source base you will
