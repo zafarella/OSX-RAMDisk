@@ -52,6 +52,9 @@ close_app()
     osascript -e "quit app \"${1}\""
 }
 
+#
+# Creates RAM Disk.
+#
 mk_ram_disk()
 {
     # unmount if exists the RAM disk and mounts if doesn't
@@ -292,18 +295,21 @@ move_appcode_cache()
 # -----------------------------------------------------------------------------------
 # The entry point
 # -----------------------------------------------------------------------------------
-check_requirements
+main() {
+    check_requirements
+    # and create our RAM disk
+    mk_ram_disk
+    # move the caches
+    move_chrome_cache
+    move_safari_cache
+    move_idea_cache
+    move_ideace_cache
+    move_itunes_cache
+    move_android_studio_cache
+    move_clion_cache
+    move_appcode_cache
+    echo "All good - I have done my job. Your apps should fly."
+}
 
-# and create our RAM disk
-mk_ram_disk
-# move the caches
-move_chrome_cache
-move_safari_cache
-move_idea_cache
-move_ideace_cache
-move_itunes_cache
-move_android_studio_cache
-move_clion_cache
-move_appcode_cache
-echo "All good - I have done my job. Your apps should fly."
+main "$@"
 # -----------------------------------------------------------------------------------
