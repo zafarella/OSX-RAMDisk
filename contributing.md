@@ -1,4 +1,4 @@
-if you made changes to file, please use vim commands
+if you made changes to the file, please use vim commands
 `
 gg
 =G
