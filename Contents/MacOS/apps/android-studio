@@ -1,0 +1,18 @@
+#!/usr/bin/env bash -x
+
+#
+# Android Studio
+#
+move_android_studio_cache()
+{
+    close_app "Android Studio"
+    echo "moving Android Studio cache";
+    if [ -d "/Applications/Android Studio.app" ]; then
+        # make a backup of config - will need it when uninstalling
+        cp -f /Applications/Android\ Studio.app/Contents/bin/idea.properties /Applications/Android\ Studio.app/Contents/bin/idea.properties.back
+        # Idea will create those dirs
+        echo "idea.system.path=${USERRAMDISK}/AndroidStudio" >> /Applications/Android\ Studio.app/Contents/bin/idea.properties
+        echo "idea.log.path=${USERRAMDISK}/AndroidStudio/logs" >> /Applications/Android\ Studio.app/Contents/bin/idea.properties
+        echo "Moved Android cache."
+    fi
+}
