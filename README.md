@@ -39,6 +39,7 @@ Compatibility
 Works on
 
 * MAC OS X 10.10.2 Yosemite
+* MAC OS X 10.11 EI Capitan
 
 > Note that you have to re-run the script in order to get the ram disk back after machine restart.
 > Currently it does not place it on startup - I'm working on it.
