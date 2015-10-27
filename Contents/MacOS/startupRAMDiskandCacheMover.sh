@@ -291,6 +291,31 @@ move_appcode_cache()
     fi
 }
 
+#
+# Firefox
+#
+move_firefox_cache()
+{
+    local app_name="Firefox"
+
+    if [ -d "/Applications/${app_name}.app" ]; then
+        if user_response "I found ${app_name}. Do you want me to move its cache?" ; then
+            echo "moving ${app_name} cache";
+            close_app ${app_name}
+
+            # make a backup of config - will need it when uninstalling
+            local profiles_dir="~/Library/Application Support/Firefox/Profiles/"
+            find "${profiles_dir}" -name 'prefs.js'  -exec cp -f {} {}.back \;
+
+            # the place for Firefox cache
+            [ -d ${USERRAMDISK}/Firefox/ ] || mkdir -p ${USERRAMDISK}/Firefox/
+
+            # we will not move firefox cache folder, coz we have it in ram only. Will just create settings.
+            find "${profiles_dir}" -name 'prefs.js' -exec echo "user_pref(\"browser.cache.disk.parent_directory\", \"${USERRAMDISK}/${app_name});\"" >> "{}" \;
+            echo "Configured ${app_name} cache."
+        fi
+    fi
+}
 
 # -----------------------------------------------------------------------------------
 # The entry point
@@ -308,6 +333,7 @@ main() {
     move_android_studio_cache
     move_clion_cache
     move_appcode_cache
+    move_firefox_cache
     echo "All good - I have done my job. Your apps should fly."
 }
 
