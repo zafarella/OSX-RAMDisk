@@ -7,7 +7,7 @@
 # Performance gain is very significant, particularly for browsers and
 # especially for IDEs like IntelliJ Idea
 #
-# Drawbacks and risks are that if RAM disk becomes full - performance will degrate
+# Drawbacks and risks are that if RAM disk becomes full - performance will degrade
 # significantly.
 #
 # USE AT YOUR OWN RISK. PLEASE NOTE IT WILL NOT CHECK FOR CORRUPTED FILES
@@ -27,7 +27,7 @@ ramdisk_device=`hdid -nomount ram://${ramfs_size_sectors}`
 USERRAMDISK="$mount_point/${USER}"
 
 
-# Checks user response.
+# Checks for the user response.
 user_response()
 {
     read -p " ${1} [y/n]" ${response}
@@ -98,7 +98,7 @@ check_requirements()
 }
 
 #
-# Check existnce of the string in file.
+# Check existence of the string in a file.
 #
 check_string_in_file()
 {
@@ -130,7 +130,7 @@ make_flag()
 }
 
 # ------------------------------------------------------
-# Applications which needs the cache to be moved to RAM
+# Applications, which needs the cache to be moved to RAM
 # Add yours at the end.
 # -------------------------------------------------------
 
