@@ -9,7 +9,7 @@ programming using IntelliJ more enjoyable.
 
 Supported apps (you can add yours):
 
-* [IntelliJ Idea 14] (https://www.jetbrains.com/idea/download/)
+* [IntelliJ Idea 14/15] (https://www.jetbrains.com/idea/download/)
 * [Google Chrome] (https://support.google.com/chrome/answer/95346?hl=en)
 * [Google Canary] (https://www.google.com/chrome/browser/canary.html)
 * Safari
