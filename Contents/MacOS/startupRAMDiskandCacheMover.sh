@@ -221,7 +221,7 @@ move_idea_cache()
 
 
     if [ -d "/Applications/IntelliJ IDEA 15.app" ]; then
-        if user_response "I found IntelliJ IDEA 14. Do you want me to move its cache?" ; then
+        if user_response "I found IntelliJ IDEA 15. Do you want me to move its cache?" ; then
             close_app "IntelliJ Idea 15"
             # make a backup of config - will need it when uninstalling
             cp -f /Applications/IntelliJ\ IDEA\ 15.app/Contents/bin/idea.properties /Applications/IntelliJ\ IDEA\ 15.app/Contents/bin/idea.properties.back
