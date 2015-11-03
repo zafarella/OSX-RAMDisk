@@ -7,7 +7,7 @@
 # Performance gain is very significant, particularly for browsers and
 # especially for IDEs like IntelliJ Idea
 #
-# Drawbacks and risks are that if RAM disk becomes full - performance will degrate
+# Drawbacks and risks are that if RAM disk becomes full - performance will degrade
 # significantly.
 #
 # USE AT YOUR OWN RISK. PLEASE NOTE IT WILL NOT CHECK FOR CORRUPTED FILES
@@ -27,7 +27,7 @@ ramdisk_device=`hdid -nomount ram://${ramfs_size_sectors}`
 USERRAMDISK="$mount_point/${USER}"
 
 
-# Checks user response.
+# Checks for the user response.
 user_response()
 {
     read -p " ${1} [y/n]" ${response}
@@ -98,7 +98,7 @@ check_requirements()
 }
 
 #
-# Check existnce of the string in file.
+# Check existence of the string in a file.
 #
 check_string_in_file()
 {
@@ -130,7 +130,7 @@ make_flag()
 }
 
 # ------------------------------------------------------
-# Applications which needs the cache to be moved to RAM
+# Applications, which needs the cache to be moved to RAM
 # Add yours at the end.
 # -------------------------------------------------------
 
@@ -208,13 +208,28 @@ move_itunes_cache()
 move_idea_cache()
 {
     if [ -d "/Applications/IntelliJ IDEA 14.app" ]; then
-        close_app "IntelliJ Idea 14"
-        # make a backup of config - will need it when uninstalling
-        cp -f /Applications/IntelliJ\ IDEA\ 14.app/Contents/bin/idea.properties /Applications/IntelliJ\ IDEA\ 14.app/Contents/bin/idea.properties.back
-        # Idea will create those dirs
-        echo "idea.system.path=${USERRAMDISK}/Idea" >> /Applications/IntelliJ\ IDEA\ 14.app/Contents/bin/idea.properties
-        echo "idea.log.path=${USERRAMDISK}/Idea/logs" >> /Applications/IntelliJ\ IDEA\ 14.app/Contents/bin/idea.properties
-        echo "Moved IntelliJ cache."
+        if user_response "I found IntelliJ IDEA 14. Do you want me to move its cache?" ; then
+            close_app "IntelliJ Idea 14"
+            # make a backup of config - will need it when uninstalling
+            cp -f /Applications/IntelliJ\ IDEA\ 14.app/Contents/bin/idea.properties /Applications/IntelliJ\ IDEA\ 14.app/Contents/bin/idea.properties.back
+            # Idea will create those dirs
+            echo "idea.system.path=${USERRAMDISK}/Idea" >> /Applications/IntelliJ\ IDEA\ 14.app/Contents/bin/idea.properties
+            echo "idea.log.path=${USERRAMDISK}/Idea/logs" >> /Applications/IntelliJ\ IDEA\ 14.app/Contents/bin/idea.properties
+            echo "Moved IntelliJ cache."
+        fi
+    fi
+
+
+    if [ -d "/Applications/IntelliJ IDEA 15.app" ]; then
+        if user_response "I found IntelliJ IDEA 14. Do you want me to move its cache?" ; then
+            close_app "IntelliJ Idea 15"
+            # make a backup of config - will need it when uninstalling
+            cp -f /Applications/IntelliJ\ IDEA\ 15.app/Contents/bin/idea.properties /Applications/IntelliJ\ IDEA\ 15.app/Contents/bin/idea.properties.back
+            # Idea will create those dirs
+            echo "idea.system.path=${USERRAMDISK}/Idea" >> /Applications/IntelliJ\ IDEA\ 15.app/Contents/bin/idea.properties
+            echo "idea.log.path=${USERRAMDISK}/Idea/logs" >> /Applications/IntelliJ\ IDEA\ 15.app/Contents/bin/idea.properties
+            echo "Moved IntelliJ 15 cache."
+        fi
     fi
 }
 
@@ -225,13 +240,27 @@ move_ideace_cache()
 {
     # todo add other versions support and CE edition
     if [ -d "/Applications/IntelliJ IDEA 14 CE.app" ]; then
-        close_app "IntelliJ Idea 14 CE"
-        # make a backup of config - will need it when uninstalling
-        cp -f /Applications/IntelliJ\ IDEA\ 14\ CE.app/Contents/bin/idea.properties /Applications/IntelliJ\ IDEA\ 14\ CE.app/Contents/bin/idea.properties.back
-        # Idea will create those dirs
-        echo "idea.system.path=${USERRAMDISK}/Idea" >> /Applications/IntelliJ\ IDEA\ 14\ CE.app/Contents/bin/idea.properties
-        echo "idea.log.path=${USERRAMDISK}/Idea/logs" >> /Applications/IntelliJ\ IDEA\ 14\ CE.app/Contents/bin/idea.properties
-        echo "Moved IntelliJ cache."
+        if user_response "I found IntelliJ IDEA CE 14. Do you want me to move its cache?" ; then
+            close_app "IntelliJ Idea 14 CE"
+            # make a backup of config - will need it when uninstalling
+            cp -f /Applications/IntelliJ\ IDEA\ 14\ CE.app/Contents/bin/idea.properties /Applications/IntelliJ\ IDEA\ 14\ CE.app/Contents/bin/idea.properties.back
+            # Idea will create those dirs
+            echo "idea.system.path=${USERRAMDISK}/Idea" >> /Applications/IntelliJ\ IDEA\ 14\ CE.app/Contents/bin/idea.properties
+            echo "idea.log.path=${USERRAMDISK}/Idea/logs" >> /Applications/IntelliJ\ IDEA\ 14\ CE.app/Contents/bin/idea.properties
+            echo "Moved IntelliJ cache."
+        fi
+    fi
+
+    if [ -d "/Applications/IntelliJ IDEA 15 CE.app" ]; then
+        if user_response "I found IntelliJ IDEA CE 15. Do you want me to move its cache?" ; then
+            close_app "IntelliJ Idea 14 CE"
+            # make a backup of config - will need it when uninstalling
+            cp -f /Applications/IntelliJ\ IDEA\ 15\ CE.app/Contents/bin/idea.properties /Applications/IntelliJ\ IDEA\ 15\ CE.app/Contents/bin/idea.properties.back
+            # Idea will create those dirs
+            echo "idea.system.path=${USERRAMDISK}/Idea" >> /Applications/IntelliJ\ IDEA\ 15\ CE.app/Contents/bin/idea.properties
+            echo "idea.log.path=${USERRAMDISK}/Idea/logs" >> /Applications/IntelliJ\ IDEA\ 15\ CE.app/Contents/bin/idea.properties
+            echo "Moved IntelliJ cache."
+        fi
     fi
 }
 
