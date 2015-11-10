@@ -7,12 +7,7 @@ If you have enough time and resources, it would be great to wrap this app and pl
 
 Code changes
 ============
-If you made changes to the file, please use vim commands
-`
-gg
-=G
-`
-
-to keep the formatting same.
+vim or emacs is the best tool to code for this repo.
+If you made changes to the file, please use vim commands `gg=G` to format the code. This will make it consistent.
 
 Thank you for your contribution!
