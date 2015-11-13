@@ -56,14 +56,16 @@ or
 git clone git@github.com:zafarella/OSX-RAMDisk.git &&
 OSX-RAMDisk/Contents/MacOS/startupRAMDiskandCacheMover.sh
 ```
-Jetbrains IDE notes
+Jetbrains IDE notes (IntelliJ)
 ===================
 In order to speed up the compilation and responsiveness of the IDE you can
 change "Project compiler output" and point it to ram disk:
 ```
-mkdir -p /Volumes/ramdisk/${USER}/compileroutput
+echo /Volumes/ramdisk/${USER}/compileroutput
 ```
 and in your project/module settings (Command+down) point to this directory.
+You can also set this [setting by default](https://www.jetbrains.com/idea/help/accessing-default-settings.html) 
+for your projects at the main menu, choose `File | Other Settings | Default Settings`
 
 Installation
 ============
