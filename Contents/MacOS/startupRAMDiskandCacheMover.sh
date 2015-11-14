@@ -1,14 +1,14 @@
 #!/usr/bin/env bash -x
 
+#
 # Copyright Zafar Khaydarov
 #
 # This is about to create a RAM disk in OS X and move the apps caches into it
-# to increase performance of those apps.
-# Performance gain is very significant, particularly for browsers and
-# especially for IDEs like IntelliJ Idea
+# to increase performance of those apps. Performance gain is very significant,
+# particularly for browsers and especially for IDEs like IntelliJ Idea.
 #
 # Drawbacks and risks are that if RAM disk becomes full - performance will degrade
-# significantly.
+# significantly - huge amount of paging will happen.
 #
 # USE AT YOUR OWN RISK. PLEASE NOTE IT WILL NOT CHECK FOR CORRUPTED FILES
 # IF YOUR RAM IS BROKEN - DO NOT USE IT.
@@ -152,7 +152,7 @@ move_chrome_cache()
             echo "";
         fi
     else
-        echo "No Google chrome folder has been found. Skiping."
+        echo "No Google chrome folder has been found. Skipping."
     fi
 }
 
@@ -265,6 +265,15 @@ move_ideace_cache()
 }
 
 #
+# Creates intelliJ intermediate output folder
+# to be used by java/scala projects.
+#
+create_intermediate_folder_for_intellij_projects()
+{
+    [ -d /Volumes/ramdisk/${USER}/compileroutput ] || mkdir -p /Volumes/ramdisk/${USER}/compileroutput
+}
+
+#
 # Android Studio
 #
 move_android_studio_cache()
@@ -333,10 +342,13 @@ main() {
     move_safari_cache
     move_idea_cache
     move_ideace_cache
+    # create intermediate folder for intellij projects output
+    create_intermediate_folder_for_intellij_projects
     move_itunes_cache
     move_android_studio_cache
     move_clion_cache
     move_appcode_cache
+    echo "echo use \"/Volumes/ramdisk/${USER}/compileroutput\" for intelliJ project output directory."
     echo "All good - I have done my job. Your apps should fly."
 }
 
