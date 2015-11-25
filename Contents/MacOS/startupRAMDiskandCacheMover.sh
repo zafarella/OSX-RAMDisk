@@ -3,12 +3,11 @@
 # Copyright Zafar Khaydarov
 #
 # This is about to create a RAM disk in OS X and move the apps caches into it
-# to increase performance of those apps.
-# Performance gain is very significant, particularly for browsers and
-# especially for IDEs like IntelliJ Idea
+# to increase performance of those apps. Performance gain is very significant,
+# particularly for browsers and especially for IDEs like IntelliJ Idea.
 #
-# Drawbacks and risks are that if RAM disk becomes full - performance will degrate
-# significantly.
+# Drawbacks and risks are that if RAM disk becomes full - performance will degrade
+# significantly - huge amount of paging will happen.
 #
 # USE AT YOUR OWN RISK. PLEASE NOTE IT WILL NOT CHECK FOR CORRUPTED FILES
 # IF YOUR RAM IS BROKEN - DO NOT USE IT.
@@ -26,11 +25,14 @@ ramfs_size_sectors=$((${ramfs_size_mb}*1024*1024/512))
 ramdisk_device=`hdid -nomount ram://${ramfs_size_sectors}`
 USERRAMDISK="$mount_point/${USER}"
 
-
-# Checks user response.
+#
+# Checks for the user response.
+#
 user_response()
 {
-    read -p " ${1} [y/n]" ${response}
+    echo -ne $@ "[Y/n]  "
+    read -r response
+
     case ${response} in
         [yY][eE][sS]|[yY]|"")
             true
@@ -39,7 +41,7 @@ user_response()
             false
             ;;
         *)
-            user_response ${@}
+            user_response $@
             ;;
     esac
 }
@@ -98,7 +100,7 @@ check_requirements()
 }
 
 #
-# Check existnce of the string in file.
+# Check existence of the string in a file.
 #
 check_string_in_file()
 {
@@ -130,7 +132,7 @@ make_flag()
 }
 
 # ------------------------------------------------------
-# Applications which needs the cache to be moved to RAM
+# Applications, which needs the cache to be moved to RAM
 # Add yours at the end.
 # -------------------------------------------------------
 
