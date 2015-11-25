@@ -26,11 +26,14 @@ ramfs_size_sectors=$((${ramfs_size_mb}*1024*1024/512))
 ramdisk_device=`hdid -nomount ram://${ramfs_size_sectors}`
 USERRAMDISK="$mount_point/${USER}"
 
-
+#
 # Checks for the user response.
+#
 user_response()
 {
-    read -p " ${1} [y/n]" ${response}
+    echo -ne $@ "[Y/n]  "
+    read -r response
+
     case ${response} in
         [yY][eE][sS]|[yY]|"")
             true
@@ -39,7 +42,7 @@ user_response()
             false
             ;;
         *)
-            user_response ${@}
+            user_response $@
             ;;
     esac
 }
