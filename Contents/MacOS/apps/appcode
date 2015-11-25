@@ -1,6 +1,9 @@
 #
 # AppCode
 #
+
+app_name="AppCode"
+
 move_appcode_cache()
 {
     if [ -d "/Applications/AppCode.app" ]; then

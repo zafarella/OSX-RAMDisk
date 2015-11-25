@@ -1,6 +1,9 @@
 #
 # Clion
 #
+
+app_name="Clion"
+
 move_clion_cache()
 {
     if [ -d "/Applications/Clion.app" ]; then

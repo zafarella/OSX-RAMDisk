@@ -1,3 +1,6 @@
+
+app_name="iTunes"
+
 move_itunes_cache()
 {
     if [ -d "/Users/${USER}/Library/Caches/com.apple.iTunes" ]; then

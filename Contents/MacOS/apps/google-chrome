@@ -1,6 +1,11 @@
+#!/usr/bin/env bash
+
 #
 # Google Chrome Cache
 #
+
+app_name="Google Chrome"
+
 move_chrome_cache()
 {
     if [ -d "/Users/${USER}/Library/Caches/Google/Chrome" ]; then

@@ -3,6 +3,8 @@
 #
 # Android Studio
 #
+app_name="Android Studio"
+
 move_android_studio_cache()
 {
     close_app "Android Studio"

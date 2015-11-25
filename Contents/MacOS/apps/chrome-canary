@@ -1,3 +1,7 @@
+
+
+app_name="Chrome Canary"
+
 move_chrome_chanary_cache()
 {
     if [ -d "/Users/${USER}/Library/Caches/Google/Chrome Canary" ]; then

@@ -1,3 +1,6 @@
+
+app_name="IntelliJ Idea 14"
+
 move_idea_cache()
 {
     if [ -d "/Applications/IntelliJ IDEA 14.app" ]; then

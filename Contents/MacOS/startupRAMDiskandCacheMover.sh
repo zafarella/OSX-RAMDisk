@@ -1,4 +1,4 @@
-#!/usr/bin/env bash -x
+#!/usr/bin/env bash -xa
 
 # Copyright Zafar Khaydarov
 #
@@ -24,7 +24,7 @@ mount_point=/Volumes/ramdisk
 ramfs_size_sectors=$((${ramfs_size_mb}*1024*1024/512))
 ramdisk_device=`hdid -nomount ram://${ramfs_size_sectors}`
 USERRAMDISK="$mount_point/${USER}"
-
+script_folder="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 #
 # Checks for the user response.
 #
@@ -128,13 +128,21 @@ check_for_flag()
 #
 make_flag()
 {
-    echo "" > /Applications/OSX-RAMDisk.app/${1}
+    echo "" > ${script_folder}/settings/${1}
 }
 
 # ------------------------------------------------------
 # Applications, which needs the cache to be moved to RAM
 # Add yours at the end.
 # -------------------------------------------------------
+
+apps=./apps/*
+for f in ${apps}; do
+    source ${f} # todo get the file name only
+    if user_response "I found ${app_name}, would you keep it's cache in RAM?" ; then
+        make_flag ${f}
+    fi
+done
 
 #
 # Google Chrome Cache
@@ -164,7 +172,7 @@ make_flag()
 #
 # Intellij Idea Community Edition
 #
-. /apps/intellij-idea-ce
+. apps/intellij-idea-ce-14
 
 #
 # Android Studio
