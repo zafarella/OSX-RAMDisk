@@ -196,11 +196,13 @@ move_safari_cache()
 move_itunes_cache()
 {
     if [ -d "/Users/${USER}/Library/Caches/com.apple.iTunes" ]; then
-        close_app "iTunes"
-        /bin/rm -rf /Users/${USER}/Library/Caches/com.apple.iTunes
-        /bin/mkdir -pv ${USERRAMDISK}/Apple/iTunes
-        /bin/ln -v -s ${USERRAMDISK}/Apple/iTunes ~/Library/Caches/com.apple.iTunes
-        echo "Moved iTunes cache."
+        if user_response "I found iTunes. Do you want me to move its cache?" ; then
+            close_app "iTunes"
+            /bin/rm -rf /Users/${USER}/Library/Caches/com.apple.iTunes
+            /bin/mkdir -pv ${USERRAMDISK}/Apple/iTunes
+            /bin/ln -v -s ${USERRAMDISK}/Apple/iTunes ~/Library/Caches/com.apple.iTunes
+            echo "Moved iTunes cache."
+        fi
     fi
 }
 
@@ -284,12 +286,14 @@ move_android_studio_cache()
     close_app "Android Studio"
     echo "moving Android Studio cache";
     if [ -d "/Applications/Android Studio.app" ]; then
-        # make a backup of config - will need it when uninstalling
-        cp -f /Applications/Android\ Studio.app/Contents/bin/idea.properties /Applications/Android\ Studio.app/Contents/bin/idea.properties.back
-        # Idea will create those dirs
-        echo "idea.system.path=${USERRAMDISK}/AndroidStudio" >> /Applications/Android\ Studio.app/Contents/bin/idea.properties
-        echo "idea.log.path=${USERRAMDISK}/AndroidStudio/logs" >> /Applications/Android\ Studio.app/Contents/bin/idea.properties
-        echo "Moved Android cache."
+        if "I found Android Studio. Do you want me to move its cache?" ; then
+            # make a backup of config - will need it when uninstalling
+            cp -f /Applications/Android\ Studio.app/Contents/bin/idea.properties /Applications/Android\ Studio.app/Contents/bin/idea.properties.back
+            # Idea will create those dirs
+            echo "idea.system.path=${USERRAMDISK}/AndroidStudio" >> /Applications/Android\ Studio.app/Contents/bin/idea.properties
+            echo "idea.log.path=${USERRAMDISK}/AndroidStudio/logs" >> /Applications/Android\ Studio.app/Contents/bin/idea.properties
+            echo "Moved Android cache."
+        fi
     fi
 }
 
