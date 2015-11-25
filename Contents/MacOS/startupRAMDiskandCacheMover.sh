@@ -26,6 +26,9 @@ ramfs_size_sectors=$((${ramfs_size_mb}*1024*1024/512))
 ramdisk_device=`hdid -nomount ram://${ramfs_size_sectors}`
 USERRAMDISK="$mount_point/${USER}"
 
+MSG_MOVE_CACHE=". Do you want me to move its cache?"
+MSG_PROMPT_FOUND="I found "
+
 #
 # Checks for the user response.
 #
@@ -143,7 +146,7 @@ make_flag()
 move_chrome_cache()
 {
     if [ -d "/Users/${USER}/Library/Caches/Google/Chrome" ]; then
-        if user_response "I found chrome. Do you want me to move its cache?" ; then
+        if user_response ${MSG_PROMPT_FOUND} 'Chrome'${MSG_MOVE_CACHE} ; then
             close_app "Google Chrome"
             /bin/mkdir -p /tmp/Google/Chrome
             /bin/mv ~/Library/Caches/Google/Chrome/* /tmp/Google/Chrome/
@@ -155,7 +158,7 @@ move_chrome_cache()
             echo "";
         fi
     else
-        echo "No Google chrome folder has been found. Skipping."
+        echo "No Google Chrome folder has been found. Skipping."
     fi
 }
 
@@ -165,7 +168,7 @@ move_chrome_cache()
 move_chrome_chanary_cache()
 {
     if [ -d "/Users/${USER}/Library/Caches/Google/Chrome Canary" ]; then
-        if user_response "I found Chrome Canary. Do you want move its cache?"; then
+        if user_response ${MSG_PROMPT_FOUND} 'Chrome Canary'${MSG_MOVE_CACHE} ; then
             close_app "Chrome Canary"
             /bin/rm -rf ~/Library/Caches/Google/Chrome\ Canary/*
             /bin/mkdir -p ${USERRAMDISK}/Google/Chrome\ Canary/Default
@@ -180,7 +183,7 @@ move_chrome_chanary_cache()
 move_safari_cache()
 {
     if [ -d "/Users/${USER}/Library/Caches/com.apple.Safari" ]; then
-        if user_response "Do you want to move Safari cache?"; then
+        if user_response ${MSG_PROMPT_FOUND} 'Safari'${MSG_MOVE_CACHE}; then
             close_app "Safari"
             /bin/rm -rf ~/Library/Caches/com.apple.Safari
             /bin/mkdir -p ${USERRAMDISK}/Apple/Safari
@@ -196,7 +199,7 @@ move_safari_cache()
 move_itunes_cache()
 {
     if [ -d "/Users/${USER}/Library/Caches/com.apple.iTunes" ]; then
-        if user_response "I found iTunes. Do you want me to move its cache?" ; then
+        if user_response ${MSG_PROMPT_FOUND} 'iTunes'${MSG_MOVE_CACHE} ; then
             close_app "iTunes"
             /bin/rm -rf /Users/${USER}/Library/Caches/com.apple.iTunes
             /bin/mkdir -pv ${USERRAMDISK}/Apple/iTunes
@@ -213,7 +216,7 @@ move_itunes_cache()
 move_idea_cache()
 {
     if [ -d "/Applications/IntelliJ IDEA 14.app" ]; then
-        if user_response "I found IntelliJ IDEA 14. Do you want me to move its cache?" ; then
+        if user_response ${MSG_PROMPT_FOUND} 'IntelliJ IDEA 14'${MSG_MOVE_CACHE} ; then
             close_app "IntelliJ Idea 14"
             # make a backup of config - will need it when uninstalling
             cp -f /Applications/IntelliJ\ IDEA\ 14.app/Contents/bin/idea.properties /Applications/IntelliJ\ IDEA\ 14.app/Contents/bin/idea.properties.back
@@ -226,7 +229,7 @@ move_idea_cache()
 
 
     if [ -d "/Applications/IntelliJ IDEA 15.app" ]; then
-        if user_response "I found IntelliJ IDEA 15. Do you want me to move its cache?" ; then
+        if user_response ${MSG_PROMPT_FOUND} 'IntelliJ IDEA 15'${MSG_MOVE_CACHE} ; then
             close_app "IntelliJ Idea 15"
             # make a backup of config - will need it when uninstalling
             cp -f /Applications/IntelliJ\ IDEA\ 15.app/Contents/bin/idea.properties /Applications/IntelliJ\ IDEA\ 15.app/Contents/bin/idea.properties.back
@@ -245,7 +248,7 @@ move_ideace_cache()
 {
     # todo add other versions support and CE edition
     if [ -d "/Applications/IntelliJ IDEA 14 CE.app" ]; then
-        if user_response "I found IntelliJ IDEA CE 14. Do you want me to move its cache?" ; then
+        if user_response ${MSG_PROMPT_FOUND} 'IntelliJ IDEA CE 14'${MSG_MOVE_CACHE} ; then
             close_app "IntelliJ Idea 14 CE"
             # make a backup of config - will need it when uninstalling
             cp -f /Applications/IntelliJ\ IDEA\ 14\ CE.app/Contents/bin/idea.properties /Applications/IntelliJ\ IDEA\ 14\ CE.app/Contents/bin/idea.properties.back
@@ -257,7 +260,7 @@ move_ideace_cache()
     fi
 
     if [ -d "/Applications/IntelliJ IDEA 15 CE.app" ]; then
-        if user_response "I found IntelliJ IDEA CE 15. Do you want me to move its cache?" ; then
+        if user_response ${MSG_PROMPT_FOUND} 'IntelliJ IDEA CE 15'${MSG_MOVE_CACHE} ; then
             close_app "IntelliJ Idea 14 CE"
             # make a backup of config - will need it when uninstalling
             cp -f /Applications/IntelliJ\ IDEA\ 15\ CE.app/Contents/bin/idea.properties /Applications/IntelliJ\ IDEA\ 15\ CE.app/Contents/bin/idea.properties.back
@@ -284,7 +287,7 @@ create_intermediate_folder_for_intellij_projects()
 move_android_studio_cache()
 {
     if [ -d "/Applications/Android Studio.app" ]; then
-        if "I found Android Studio. Do you want me to move its cache?" ; then
+        if user_response ${MSG_PROMPT_FOUND} 'Android Studio'${MSG_MOVE_CACHE} ; then
             echo "moving Android Studio cache";
             close_app "Android Studio"
             # make a backup of config - will need it when uninstalling
@@ -303,7 +306,7 @@ move_android_studio_cache()
 move_clion_cache()
 {
     if [ -d "/Applications/Clion.app" ]; then
-        if user_response "I found CLion. Do you want me to move its cache?" ; then
+        if user_response ${MSG_PROMPT_FOUND} 'Clion'${MSG_MOVE_CACHE} ; then
             echo "moving Clion cache";
             close_app "Clion"
             # make a backup of config - will need it when uninstalling
@@ -322,7 +325,7 @@ move_clion_cache()
 move_appcode_cache()
 {
     if [ -d "/Applications/AppCode.app" ]; then
-        if user_response "I found AppCode. Do you want me to move its cache?" ; then
+        if user_response ${MSG_PROMPT_FOUND} 'AppCode'${MSG_MOVE_CACHE} ; then
             echo "moving AppCode cache";
             close_app "AppCode"
             # make a backup of config - will need it when uninstalling
