@@ -283,10 +283,10 @@ create_intermediate_folder_for_intellij_projects()
 #
 move_android_studio_cache()
 {
-    close_app "Android Studio"
-    echo "moving Android Studio cache";
     if [ -d "/Applications/Android Studio.app" ]; then
         if "I found Android Studio. Do you want me to move its cache?" ; then
+            echo "moving Android Studio cache";
+            close_app "Android Studio"
             # make a backup of config - will need it when uninstalling
             cp -f /Applications/Android\ Studio.app/Contents/bin/idea.properties /Applications/Android\ Studio.app/Contents/bin/idea.properties.back
             # Idea will create those dirs
