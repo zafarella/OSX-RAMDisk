@@ -1,0 +1,15 @@
+
+app_name="iTunes"
+
+move_safari_cache()
+{
+    if [ -d "/Users/${USER}/Library/Caches/com.apple.Safari" ]; then
+        if user_response "Do you want to move Safari cache?"; then
+            close_app "Safari"
+            /bin/rm -rf ~/Library/Caches/com.apple.Safari
+            /bin/mkdir -p ${USERRAMDISK}/Apple/Safari
+            /bin/ln -s ${USERRAMDISK}/Apple/Safari ~/Library/Caches/com.apple.Safari
+            echo "Moved Safari cache."
+        fi
+    fi
+}

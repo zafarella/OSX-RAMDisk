@@ -1,0 +1,13 @@
+#!/usr/bin/env bash -x
+
+#
+# name of the app goes here
+#
+name_of_function_to_move_app_cache()
+{
+    close_app "app name"
+    echo "moving app name cache";
+        # do whatever you need to do to move the caches and add cron jobs with rsync etc
+        echo "Moved app name cache."
+    fi
+}

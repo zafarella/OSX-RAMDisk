@@ -1,0 +1,17 @@
+
+
+app_name="IntelliJ Idea 14 CE"
+
+
+move_ideace_cache()
+{
+    if [ -d "/Applications/IntelliJ IDEA 14 CE.app" ]; then
+        close_app "IntelliJ Idea 14 CE"
+        # make a backup of config - will need it when uninstalling
+        cp -f /Applications/IntelliJ\ IDEA\ 14\ CE.app/Contents/bin/idea.properties /Applications/IntelliJ\ IDEA\ 14\ CE.app/Contents/bin/idea.properties.back
+        # Idea will create those dirs
+        echo "idea.system.path=${USERRAMDISK}/Idea" >> /Applications/IntelliJ\ IDEA\ 14\ CE.app/Contents/bin/idea.properties
+        echo "idea.log.path=${USERRAMDISK}/Idea/logs" >> /Applications/IntelliJ\ IDEA\ 14\ CE.app/Contents/bin/idea.properties
+        echo "Moved IntelliJ cache."
+    fi
+}

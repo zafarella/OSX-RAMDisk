@@ -1,0 +1,13 @@
+
+app_name="iTunes"
+
+move_itunes_cache()
+{
+    if [ -d "/Users/${USER}/Library/Caches/com.apple.iTunes" ]; then
+        close_app "iTunes"
+        /bin/rm -rf /Users/${USER}/Library/Caches/com.apple.iTunes
+        /bin/mkdir -pv ${USERRAMDISK}/Apple/iTunes
+        /bin/ln -v -s ${USERRAMDISK}/Apple/iTunes ~/Library/Caches/com.apple.iTunes
+        echo "Moved iTunes cache."
+    fi
+}

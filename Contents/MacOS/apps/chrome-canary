@@ -1,0 +1,15 @@
+
+
+app_name="Chrome Canary"
+
+move_chrome_chanary_cache()
+{
+    if [ -d "/Users/${USER}/Library/Caches/Google/Chrome Canary" ]; then
+        if user_response "I found Chrome Canary. Do you want move its cache?"; then
+            close_app "Chrome Canary"
+            /bin/rm -rf ~/Library/Caches/Google/Chrome\ Canary/*
+            /bin/mkdir -p ${USERRAMDISK}/Google/Chrome\ Canary/Default
+            /bin/ln -s ${USERRAMDISK}/Google/Chrome\ Canary/Default ~/Library/Caches/Google/Chrome\ Canary/Default
+        fi
+    fi
+}

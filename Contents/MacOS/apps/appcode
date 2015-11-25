@@ -1,0 +1,22 @@
+#
+# AppCode
+#
+
+app_name="AppCode"
+
+move_appcode_cache()
+{
+    if [ -d "/Applications/AppCode.app" ]; then
+        if user_response "I found AppCode. Do you want me to move its cache?" ; then
+            echo "moving AppCode cache";
+            close_app "AppCode"
+            # make a backup of config - will need it when uninstalling
+            cp -f /Applications/AppCode.app/Contents/bin/idea.properties /Applications/AppCode.app/Contents/bin/idea.properties.back
+            # Need to create those dirs
+            echo "idea.system.path=${USERRAMDISK}/AppCode" >> /Applications/AppCode.app/Contents/bin/idea.properties
+            echo "idea.log.path=${USERRAMDISK}/AppCode/logs" >> /Applications/AppCode.app/Contents/bin/idea.properties
+            mkdir -p ${USERRAMDISK}/AppCode/logs
+            echo "Moved AppCode cache."
+        fi
+    fi
+}

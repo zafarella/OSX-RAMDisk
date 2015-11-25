@@ -1,0 +1,21 @@
+#
+# Clion
+#
+
+app_name="Clion"
+
+move_clion_cache()
+{
+    if [ -d "/Applications/Clion.app" ]; then
+        if user_response "I found CLion. Do you want me to move its cache?" ; then
+            echo "moving Clion cache";
+            close_app "Clion"
+            # make a backup of config - will need it when uninstalling
+            cp -f /Applications/Clion.app/Contents/bin/idea.properties /Applications/Clion.app/Contents/bin/idea.properties.back
+            # Idea will create those dirs
+            echo "idea.system.path=${USERRAMDISK}/CLion" >> /Applications/Clion.app/Contents/bin/idea.properties
+            echo "idea.log.path=${USERRAMDISK}/Clion/logs" >> /Applications/Clion.app/Contents/bin/idea.properties
+            echo "Moved Clion cache."
+        fi
+    fi
+}

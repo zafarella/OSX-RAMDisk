@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+#
+# Google Chrome Cache
+#
+
+app_name="Google Chrome"
+
+move_chrome_cache()
+{
+    if [ -d "/Users/${USER}/Library/Caches/Google/Chrome" ]; then
+        if user_response "I found chrome. Do you want me to move its cache?" ; then
+            close_app "Google Chrome"
+            /bin/mkdir -p /tmp/Google/Chrome
+            /bin/mv ~/Library/Caches/Google/Chrome/* /tmp/Google/Chrome/
+            /bin/mkdir -pv ${USERRAMDISK}/Google/Chrome/Default
+            /bin/mv /tmp/Google/Chrome/ ${USERRAMDISK}/Google/Chrome
+            /bin/ln -v -s -f ${USERRAMDISK}/Google/Chrome/Default ~/Library/Caches/Google/Chrome/Default
+            /bin/rm -rf /tmp/Google/Chrome
+            # and let's create a flag for next run that we moved the cache.
+            echo "";
+        fi
+    else
+        echo "No Google chrome folder has been found. Skiping."
+    fi
+}
