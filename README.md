@@ -67,6 +67,9 @@ and in your project/module settings (Command+down) point to this directory.
 You can also set this [setting by default](https://www.jetbrains.com/idea/help/accessing-default-settings.html) 
 for your projects at the main menu, choose `File | Other Settings | Default Settings`
 
+In addition to above you can tune jvm with following [flags](https://gist.github.com/zafarella/43bc260c3c0cdc34f109) 
+`vim /Applications/IntelliJ\ IDEA\ 15.app/Contents/bin/idea.vmoptions`
+
 Installation
 ============
 Do not use it now - the startup script does not work yet - work in progress
