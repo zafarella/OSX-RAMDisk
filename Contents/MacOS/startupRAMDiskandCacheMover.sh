@@ -320,7 +320,7 @@ move_clion_cache()
 }
 
 #
-# AppCode
+# AppCode - ios
 #
 move_appcode_cache()
 {
@@ -335,6 +335,24 @@ move_appcode_cache()
             echo "idea.log.path=${USERRAMDISK}/AppCode/logs" >> /Applications/AppCode.app/Contents/bin/idea.properties
             mkdir -p ${USERRAMDISK}/AppCode/logs
             echo "Moved AppCode cache."
+        fi
+    fi
+}
+
+#
+# Xcode - ios
+#
+move_xcode_cache()
+{
+    if [ -d "/Applications/Xcode.app" ]; then
+        if user_response ${MSG_PROMT_FOUND} 'Xcode'${MSG_MOVE_CACHE} ; then
+            echo "moving XCode cache..";
+            echo "deleting ~/Library/Developer/Xcode/DerivedData"
+
+            /bin/rm -rvf ~/Library/Developer/Xcode/DerivedData
+            /bin/mkdir -pv ${USERRAMDISK}/Apple/Xcode
+            /bin/ln -v -s ${USERRAMDISK}/Apple/Xcode /Users/${USER}/Library/Developer/Xcode/DerivedData
+            echo "Moved Xcode cache."
         fi
     fi
 }
@@ -358,6 +376,7 @@ main() {
     move_android_studio_cache
     move_clion_cache
     move_appcode_cache
+    move_xcode_cache
     echo "echo use \"/Volumes/ramdisk/${USER}/compileroutput\" for intelliJ project output directory."
     echo "All good - I have done my job. Your apps should fly."
 }
