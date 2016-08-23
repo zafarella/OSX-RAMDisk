@@ -18,6 +18,7 @@ Supported apps (you can add yours):
 * [WebShtorm] (https://www.jetbrains.com/webstorm/)
 * [Clion] (https://www.jetbrains.com/clion/)
 * [AppCode] (https://www.jetbrains.com/objc/)
+* [Xcode] (https://developer.apple.com/xcode/downloads/)
 * [your_app_goes_here]
 
 The IntelliJ Idea (or JetBrains IDEs) are really fast after this. Be aware that for the large code base you will
