@@ -33,6 +33,8 @@ option - you don't need to worry about this part.
 Have something to discuss? 
 [![Join the chat at https://gitter.im/zafarella/OSX-RAMDisk](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/zafarella/OSX-RAMDisk?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/458/badge)](https://bestpractices.coreinfrastructure.org/projects/458)
+
 If you have any issues (compatibility etc) - I am glad to have them reported in the [issues](https://github.com/zafarella/OSX-RAMDisk/issues) tab.
 
 Compatibility
