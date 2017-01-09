@@ -21,7 +21,7 @@
 ramfs_size_mb=$(sysctl hw.memsize | awk '{print $2;}')
 ramfs_size_mb=$((${ramfs_size_mb} / 1024 / 1024 / 4))
 
-mount_point=/Volumes/ramdisk
+mount_point=/Users/${USER}/ramdisk
 ramfs_size_sectors=$((${ramfs_size_mb}*1024*1024/512))
 ramdisk_device=`hdid -nomount ram://${ramfs_size_sectors}`
 USERRAMDISK="$mount_point/${USER}"
@@ -63,7 +63,7 @@ close_app()
 #
 mk_ram_disk()
 {
-    # unmount if exists the RAM disk and mounts if doesn't
+    # unmount if exists and mounts if doesn't
     umount -f ${mount_point}
     newfs_hfs -v 'ramdisk' ${ramdisk_device}
     mkdir -p ${mount_point}
@@ -377,7 +377,7 @@ main() {
     move_clion_cache
     move_appcode_cache
     move_xcode_cache
-    echo "echo use \"/Volumes/ramdisk/${USER}/compileroutput\" for intelliJ project output directory."
+    echo "echo use \"${mount_point}/${USER}/compileroutput\" for intelliJ project output directory."
     echo "All good - I have done my job. Your apps should fly."
 }
 
