@@ -24,7 +24,7 @@ ramfs_size_mb=$((${ramfs_size_mb} / 1024 / 1024 / 4))
 mount_point=/Users/${USER}/ramdisk
 ramfs_size_sectors=$((${ramfs_size_mb}*1024*1024/512))
 ramdisk_device=`hdid -nomount ram://${ramfs_size_sectors}`
-USERRAMDISK="$mount_point/${USER}"
+USERRAMDISK="$mount_point"
 
 MSG_MOVE_CACHE=". Do you want me to move its cache?"
 MSG_PROMPT_FOUND="I found "
@@ -377,7 +377,7 @@ main() {
     move_clion_cache
     move_appcode_cache
     move_xcode_cache
-    echo "echo use \"${mount_point}/${USER}/compileroutput\" for intelliJ project output directory."
+    echo "echo use \"${mount_point}/compileroutput\" for intelliJ project output directory."
     echo "All good - I have done my job. Your apps should fly."
 }
 
