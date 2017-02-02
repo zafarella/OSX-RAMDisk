@@ -79,7 +79,7 @@ Installation
 Do not use it now - the startup script does not work yet - work in progress
 ```
 git clone git@github.com:zafarella/OSX-RAMDisk.git
-cd OSX-RAMDiskix
+cd OSX-RAMDisk
 make install
 ```
 
