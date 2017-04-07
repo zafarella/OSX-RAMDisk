@@ -3,20 +3,20 @@
 #
 # Copyright Zafar Khaydarov
 #
-# This is about to create a RAM disk in OS X and move the apps caches into it
-# to increase performance of those apps. Performance gain is very significant,
-# particularly for browsers and especially for IDEs like IntelliJ Idea.
+# This script creates a RAM disk in macOS and moves the apps caches into it,
+# increasing the performance of those apps. Performance gain is very significant
+# for browsers, and especially for IDEs like IntelliJ Idea.
 #
-# Drawbacks and risks are that if RAM disk becomes full - performance will degrade
-# significantly - huge amount of paging will happen.
+# There are risks. If the RAM disk becomes full, performance will degrade
+# significantly and a huge amount of paging will happen.
 #
-# USE AT YOUR OWN RISK. PLEASE NOTE IT WILL NOT CHECK FOR CORRUPTED FILES
+# USE AT YOUR OWN RISK. PLEASE NOTE IT WILL NOT CHECK FOR CORRUPTED FILES.
 # IF YOUR RAM IS BROKEN - DO NOT USE IT.
 #
 
-# The RAM amount you want to allocate for RAM disk. One of
-# 1024 2048 3072 4096 5120 6144 7168 8192
-# By default will use 1/4 of your RAM
+# The amount of RAM you want to allocate for the RAM disk. Sizes are:
+# 1024, 2048, 3072, 4096, 5120, 6144, 7168, 8192.
+# By default the script will use 1/4 of your RAM.
 
 ramfs_size_mb=$(sysctl hw.memsize | awk '{print $2;}')
 ramfs_size_mb=$((${ramfs_size_mb} / 1024 / 1024 / 4))
@@ -51,7 +51,7 @@ user_response()
 }
 
 #
-# Closes passed as arg app by name
+# Closes passed as arg app by name.
 #
 close_app()
 {
@@ -63,40 +63,40 @@ close_app()
 #
 mk_ram_disk()
 {
-    # unmount if exists and mounts if doesn't
+    # Create the RAM disk and mounts it.
     umount -f ${mount_point}
     newfs_hfs -v 'ramdisk' ${ramdisk_device}
     mkdir -p ${mount_point}
     mount -o noatime -t hfs ${ramdisk_device} ${mount_point}
 
     echo "created RAM disk."
-    # Hide RAM disk - we don't really need it to be annoiyng in finder.
-    # comment out should you need it.
+    # Hide the RAM disk - it'll be annoying sitting in finder.
+    # Comment this out should you need it.
     hide_ramdisk
     echo "RAM disk hidden"
 }
 
-# adds rsync to be executed each 5 min for current user
+# Adds rsync to be executed every 5 min. for the current user.
 add_rsync_to_cron()
 {
-    #todo fixme
+    #TODO - Fix me.
     crontab -l | { cat; echo "5 * * * * rsync"; } | crontab -
 }
 
-# Open an application
+# Open an application.
 open_app()
 {
     osascript -e "tell app \"${1}\" to activate"
 }
 
-# Hide RamDisk directory
+# Hide ramdisk directory.
 hide_ramdisk()
 {
     /usr/bin/chflags hidden ${mount_point}
 }
 
 # Checks that we have
-# all required utils before proceeding
+# all required utils before proceeding.
 check_requirements()
 {
     hash rsync 2>/dev/null || { echo >&2 "No rsync has been found.  Aborting. If you use brew install using: 'brew install rsync'"; exit 1; }
@@ -104,7 +104,7 @@ check_requirements()
 }
 
 #
-# Check existence of the string in a file.
+# Check for existence of the string in a file.
 #
 check_string_in_file()
 {
@@ -116,7 +116,7 @@ check_string_in_file()
 }
 
 #
-# Check for the flag
+# Check for flag indicating the app's cache has been moved.
 #
 check_for_flag()
 {
@@ -128,7 +128,7 @@ check_for_flag()
 }
 
 #
-# Creates flag indicating the apps cache has been moved.
+# Creates flag indicating the app's cache has been moved.
 #
 make_flag()
 {
@@ -136,7 +136,7 @@ make_flag()
 }
 
 # ------------------------------------------------------
-# Applications, which needs the cache to be moved to RAM
+# Applications whos cache is to be moved to RAM.
 # Add yours at the end.
 # -------------------------------------------------------
 
@@ -154,7 +154,7 @@ move_chrome_cache()
             /bin/mv /tmp/Google/Chrome/ ${USERRAMDISK}/Google/Chrome
             /bin/ln -v -s -f ${USERRAMDISK}/Google/Chrome/Default ~/Library/Caches/Google/Chrome/Default
             /bin/rm -rf /tmp/Google/Chrome
-            # and let's create a flag for next run that we moved the cache.
+            # Create a flag for next run that we moved the cache.
             echo "";
         fi
     else
@@ -212,15 +212,15 @@ move_itunes_cache()
 #
 # Intellij Idea
 #
-# fixme - what if the version is not 14?
+# FIXME - what if the version is not 14?
 move_idea_cache()
 {
     if [ -d "/Applications/IntelliJ IDEA 14.app" ]; then
         if user_response ${MSG_PROMPT_FOUND} 'IntelliJ IDEA 14'${MSG_MOVE_CACHE} ; then
             close_app "IntelliJ Idea 14"
-            # make a backup of config - will need it when uninstalling
+            # Make a backup of config, we will need it when uninstalling.
             cp -f /Applications/IntelliJ\ IDEA\ 14.app/Contents/bin/idea.properties /Applications/IntelliJ\ IDEA\ 14.app/Contents/bin/idea.properties.back
-            # Idea will create those dirs
+            # Idea will create those dirs.
             echo "idea.system.path=${USERRAMDISK}/Idea" >> /Applications/IntelliJ\ IDEA\ 14.app/Contents/bin/idea.properties
             echo "idea.log.path=${USERRAMDISK}/Idea/logs" >> /Applications/IntelliJ\ IDEA\ 14.app/Contents/bin/idea.properties
             echo "Moved IntelliJ cache."
@@ -231,9 +231,9 @@ move_idea_cache()
     if [ -d "/Applications/IntelliJ IDEA 15.app" ]; then
         if user_response ${MSG_PROMPT_FOUND} 'IntelliJ IDEA 15'${MSG_MOVE_CACHE} ; then
             close_app "IntelliJ Idea 15"
-            # make a backup of config - will need it when uninstalling
+            # Make a backup of config, we will need it when uninstalling.
             cp -f /Applications/IntelliJ\ IDEA\ 15.app/Contents/bin/idea.properties /Applications/IntelliJ\ IDEA\ 15.app/Contents/bin/idea.properties.back
-            # Idea will create those dirs
+            # Idea will create those dirs.
             echo "idea.system.path=${USERRAMDISK}/Idea" >> /Applications/IntelliJ\ IDEA\ 15.app/Contents/bin/idea.properties
             echo "idea.log.path=${USERRAMDISK}/Idea/logs" >> /Applications/IntelliJ\ IDEA\ 15.app/Contents/bin/idea.properties
             echo "Moved IntelliJ 15 cache."
@@ -242,15 +242,15 @@ move_idea_cache()
 }
 
 #
-# Intellij Idea Community Edition
+# IntelliJ Idea Community Edition
 #
 move_ideace_cache()
 {
-    # todo add other versions support and CE edition
+    # TODO - Add support for other versions.
     if [ -d "/Applications/IntelliJ IDEA 14 CE.app" ]; then
         if user_response ${MSG_PROMPT_FOUND} 'IntelliJ IDEA CE 14'${MSG_MOVE_CACHE} ; then
             close_app "IntelliJ Idea 14 CE"
-            # make a backup of config - will need it when uninstalling
+            # make a backup of config, we will need it when uninstalling
             cp -f /Applications/IntelliJ\ IDEA\ 14\ CE.app/Contents/bin/idea.properties /Applications/IntelliJ\ IDEA\ 14\ CE.app/Contents/bin/idea.properties.back
             # Idea will create those dirs
             echo "idea.system.path=${USERRAMDISK}/Idea" >> /Applications/IntelliJ\ IDEA\ 14\ CE.app/Contents/bin/idea.properties
@@ -262,9 +262,9 @@ move_ideace_cache()
     if [ -d "/Applications/IntelliJ IDEA 15 CE.app" ]; then
         if user_response ${MSG_PROMPT_FOUND} 'IntelliJ IDEA CE 15'${MSG_MOVE_CACHE} ; then
             close_app "IntelliJ Idea 14 CE"
-            # make a backup of config - will need it when uninstalling
+            # Make a backup of config, we will need it when uninstalling.
             cp -f /Applications/IntelliJ\ IDEA\ 15\ CE.app/Contents/bin/idea.properties /Applications/IntelliJ\ IDEA\ 15\ CE.app/Contents/bin/idea.properties.back
-            # Idea will create those dirs
+            # Idea will create those dirs.
             echo "idea.system.path=${USERRAMDISK}/Idea" >> /Applications/IntelliJ\ IDEA\ 15\ CE.app/Contents/bin/idea.properties
             echo "idea.log.path=${USERRAMDISK}/Idea/logs" >> /Applications/IntelliJ\ IDEA\ 15\ CE.app/Contents/bin/idea.properties
             echo "Moved IntelliJ cache."
@@ -273,8 +273,8 @@ move_ideace_cache()
 }
 
 #
-# Creates intelliJ intermediate output folder
-# to be used by java/scala projects.
+# Creates IntelliJ intermediate output folder
+# to be used by Java/Scala projects.
 #
 create_intermediate_folder_for_intellij_projects()
 {
@@ -290,9 +290,9 @@ move_android_studio_cache()
         if user_response ${MSG_PROMPT_FOUND} 'Android Studio'${MSG_MOVE_CACHE} ; then
             echo "moving Android Studio cache";
             close_app "Android Studio"
-            # make a backup of config - will need it when uninstalling
+            # Make a backup of config - will need it when uninstalling.
             cp -f /Applications/Android\ Studio.app/Contents/bin/idea.properties /Applications/Android\ Studio.app/Contents/bin/idea.properties.back
-            # Idea will create those dirs
+            # Idea will create those dirs.
             echo "idea.system.path=${USERRAMDISK}/AndroidStudio" >> /Applications/Android\ Studio.app/Contents/bin/idea.properties
             echo "idea.log.path=${USERRAMDISK}/AndroidStudio/logs" >> /Applications/Android\ Studio.app/Contents/bin/idea.properties
             echo "Moved Android cache."
@@ -301,7 +301,7 @@ move_android_studio_cache()
 }
 
 #
-# Clion
+# CLion
 #
 move_clion_cache()
 {
@@ -309,9 +309,9 @@ move_clion_cache()
         if user_response ${MSG_PROMPT_FOUND} 'Clion'${MSG_MOVE_CACHE} ; then
             echo "moving Clion cache";
             close_app "Clion"
-            # make a backup of config - will need it when uninstalling
+            # Make a backup of config - will need it when uninstalling.
             cp -f /Applications/Clion.app/Contents/bin/idea.properties /Applications/Clion.app/Contents/bin/idea.properties.back
-            # Idea will create those dirs
+            # Idea will create those dirs.
             echo "idea.system.path=${USERRAMDISK}/Clion" >> /Applications/Clion.app/Contents/bin/idea.properties
             echo "idea.log.path=${USERRAMDISK}/Clion/logs" >> /Applications/Clion.app/Contents/bin/idea.properties
             echo "Moved Clion cache."
@@ -320,7 +320,7 @@ move_clion_cache()
 }
 
 #
-# AppCode - ios
+# AppCode - iOS
 #
 move_appcode_cache()
 {
@@ -340,7 +340,7 @@ move_appcode_cache()
 }
 
 #
-# Xcode - ios
+# Xcode - iOS
 #
 move_xcode_cache()
 {
@@ -377,18 +377,18 @@ move_phpstorm_cache()
 }
 
 # -----------------------------------------------------------------------------------
-# The entry point
+# The entry point.
 # -----------------------------------------------------------------------------------
 main() {
     check_requirements
-    # and create our RAM disk
+    # Create the RAM disk.
     mk_ram_disk
-    # move the caches
+    # Move the caches.
     move_chrome_cache
     move_safari_cache
     move_idea_cache
     move_ideace_cache
-    # create intermediate folder for intellij projects output
+    # Create intermediate folder for IntelliJ projects output.
     create_intermediate_folder_for_intellij_projects
     move_itunes_cache
     move_android_studio_cache
