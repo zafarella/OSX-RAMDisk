@@ -357,6 +357,24 @@ move_xcode_cache()
     fi
 }
 
+#
+# PhpStorm
+#
+move_phpstorm_cache()
+{
+    if [ -d "/Applications/PhpStorm.app" ]; then
+        if user_response ${MSG_PROMPT_FOUND} 'PhpStorm'${MSG_MOVE_CACHE} ; then
+            echo "moving PHPStorm cache";
+            close_app "PhpStorm"
+            # make a backup of config - will need it when uninstalling
+            cp -f /Applications/PhpStorm.app/Contents/bin/idea.properties /Applications/PhpStorm.app/Contents/bin/idea.properties.back
+            # Idea will create those dirs
+            echo "idea.system.path=${USERRAMDISK}/PhpStorm" >> /Applications/PhpStorm.app/Contents/bin/idea.properties
+            echo "idea.log.path=${USERRAMDISK}/PhpStorm/logs" >> /Applications/PhpStorm.app/Contents/bin/idea.properties
+            echo "Moved PhpStorm cache."
+        fi
+    fi
+}
 
 # -----------------------------------------------------------------------------------
 # The entry point
@@ -377,6 +395,7 @@ main() {
     move_clion_cache
     move_appcode_cache
     move_xcode_cache
+    move_phpstorm_cache
     echo "echo use \"${mount_point}/compileroutput\" for intelliJ project output directory."
     echo "All good - I have done my job. Your apps should fly."
 }
