@@ -43,6 +43,7 @@ Works on
 
 * MAC OS X 10.10.2 Yosemite
 * MAC OS X 10.11 EI Capitan
+* MAC OS X 10.12 Sierra
 
 > Note that you have to re-run the script in order to get the ram disk back after machine restart.
 > Currently it does not place it on startup - I'm working on it.
@@ -78,7 +79,7 @@ Installation
 Do not use it now - the startup script does not work yet - work in progress
 ```
 git clone git@github.com:zafarella/OSX-RAMDisk.git
-cd OSX-RAMDiskix
+cd OSX-RAMDisk
 make install
 ```
 
