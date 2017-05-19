@@ -1,6 +1,8 @@
 OS X RAM Disk
 ================
 
+[![Build Status](https://travis-ci.org/zafarella/OSX-RAMDisk.svg?branch=master)](https://travis-ci.org/zafarella/OSX-RAMDisk)
+
 Need really fast Java IDE or browser? Then keep reading.
 
 This app will create a [RAM disk](http://en.wikipedia.org/wiki/RAM_drive) in OS-X with specified size to
