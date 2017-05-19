@@ -1,15 +1,17 @@
-sudo: required
-
 language: bash
 
-services:
-  - docker
+# Use container-based infrastructure for quicker build start-up
+sudo: false
 
-before_install:
-  - docker pull koalaman/shellcheck
+addons:
+  apt:
+    sources:
+    - debian-sid    # Grab shellcheck from the Debian repo (o_O)
+    packages:
+    - shellcheck
 
 script:
- - docker run -v $(pwd):/scripts koalaman/shellcheck /Contents/MacOS/startupRAMDiskandCacheMover.sh
+ - bash -c 'shopt -s globstar; shellcheck **/*.{sh,bash}'
 
 matrix:
   fast_finish: true
