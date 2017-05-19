@@ -9,7 +9,7 @@ before_install:
   - docker pull koalaman/shellcheck
 
 script:
- - docker run -v $(pwd):/scripts koalaman/shellcheck /OSX-RAMDisk/Contents/MacOS/startupRAMDiskandCacheMover.sh
+ - docker run -v $(pwd):/scripts koalaman/shellcheck /Contents/MacOS/startupRAMDiskandCacheMover.sh
 
 matrix:
   fast_finish: true
