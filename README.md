@@ -11,16 +11,17 @@ programming using IntelliJ more enjoyable.
 
 Supported apps (you can add yours):
 
-* [IntelliJ Idea 14/15] (https://www.jetbrains.com/idea/download/)
-* [Google Chrome] (https://support.google.com/chrome/answer/95346?hl=en)
-* [Google Canary] (https://www.google.com/chrome/browser/canary.html)
+* [IntelliJ Idea 14/15](https://www.jetbrains.com/idea/download/)
+* [Google Chrome](https://support.google.com/chrome/answer/95346?hl=en)
+* [Google Canary](https://www.google.com/chrome/browser/canary.html)
 * Safari
 * iTunes
-* [Android studio] (http://developer.android.com/sdk/index.html)
-* [WebShtorm] (https://www.jetbrains.com/webstorm/)
-* [Clion] (https://www.jetbrains.com/clion/)
-* [AppCode] (https://www.jetbrains.com/objc/)
-* [Xcode] (https://developer.apple.com/xcode/downloads/)
+* [Android studio](http://developer.android.com/sdk/index.html)
+* [WebShtorm](https://www.jetbrains.com/webstorm/)
+* [Clion](https://www.jetbrains.com/clion/)
+* [AppCode](https://www.jetbrains.com/objc/)
+* [Xcode](https://developer.apple.com/xcode/downloads/)
+* [PHP Storm](https://www.jetbrains.com/phpstorm/)
 * [your_app_goes_here]
 
 The IntelliJ Idea (or JetBrains IDEs) are really fast after this. Be aware that for the large code base you will
