@@ -26,7 +26,7 @@ ramfs_size_sectors=$((${ramfs_size_mb}*1024*1024/512))
 ramdisk_device=`hdid -nomount ram://${ramfs_size_sectors}`
 USERRAMDISK="$mount_point"
 
-MSG_MOVE_CACHE=". Do you want me to move its cache?"
+MSG_MOVE_CACHE=". Do you want me to move its cache? Note: It will close the app."
 MSG_PROMPT_FOUND="I found "
 
 #
