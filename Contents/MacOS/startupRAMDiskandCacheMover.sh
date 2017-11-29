@@ -23,7 +23,7 @@ ramfs_size_mb=$((${ramfs_size_mb} / 1024 / 1024 / 4))
 
 mount_point=/Users/${USER}/ramdisk
 ramfs_size_sectors=$((${ramfs_size_mb}*1024*1024/512))
-ramdisk_device=`hdid -nomount ram://${ramfs_size_sectors}`
+ramdisk_device=`hdid -nomount ram://${ramfs_size_sectors} | tr -d '[:space:]'`
 USERRAMDISK="$mount_point"
 
 MSG_MOVE_CACHE=". Do you want me to move its cache? Note: It will close the app."
