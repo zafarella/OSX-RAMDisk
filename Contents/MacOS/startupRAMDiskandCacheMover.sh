@@ -1,4 +1,6 @@
-#!/usr/bin/env bash -x
+#!/usr/bin/env bash
+
+set -x
 
 #
 # Copyright Zafar Khaydarov
@@ -34,7 +36,7 @@ MSG_PROMPT_FOUND="I found "
 #
 user_response()
 {
-    echo -ne $@ "[Y/n]  "
+    echo -ne "$@" "[Y/n]  "
     read -r response
 
     case ${response} in
@@ -45,7 +47,7 @@ user_response()
             false
             ;;
         *)
-            user_response $@
+            user_response "$@"
             ;;
     esac
 }
