@@ -1,4 +1,6 @@
-#!/usr/bin/env bash -x
+#!/usr/bin/env bash
+
+set -x
 
 #
 # Copyright Zafar Khaydarov
@@ -19,12 +21,12 @@
 # By default will use 1/4 of your RAM
 
 ramfs_size_mb=$(sysctl hw.memsize | awk '{print $2;}')
-ramfs_size_mb=$((${ramfs_size_mb} / 1024 / 1024 / 4))
+ramfs_size_mb=$(${ramfs_size_mb} / 1024 / 1024 / 4)
 
 mount_point=/Users/${USER}/ramdisk
-ramfs_size_sectors=$((${ramfs_size_mb}*1024*1024/512))
-ramdisk_device=`hdid -nomount ram://${ramfs_size_sectors}`
-USERRAMDISK="$mount_point"
+ramfs_size_sectors=$("${ramfs_size_mb}"*1024*1024/512)
+ramdisk_device=$(hdid -nomount ram://"${ramfs_size_sectors}")
+USERRAMDISK="${mount_point}"
 
 MSG_MOVE_CACHE=". Do you want me to move its cache? Note: It will close the app."
 MSG_PROMPT_FOUND="I found "
@@ -34,7 +36,7 @@ MSG_PROMPT_FOUND="I found "
 #
 user_response()
 {
-    echo -ne $@ "[Y/n]  "
+    echo -ne "$@" "[Y/n]  "
     read -r response
 
     case ${response} in
@@ -45,7 +47,7 @@ user_response()
             false
             ;;
         *)
-            user_response $@
+            user_response "$@"
             ;;
     esac
 }
@@ -64,10 +66,10 @@ close_app()
 mk_ram_disk()
 {
     # unmount if exists and mounts if doesn't
-    umount -f ${mount_point}
-    newfs_hfs -v 'ramdisk' ${ramdisk_device}
-    mkdir -p ${mount_point}
-    mount -o noatime -t hfs ${ramdisk_device} ${mount_point}
+    umount -f "${mount_point}"
+    newfs_hfs -v 'ramdisk' "${ramdisk_device}"
+    mkdir -p "${mount_point}"
+    mount -o noatime -t hfs "${ramdisk_device}" "${mount_point}"
 
     echo "created RAM disk."
     # Hide RAM disk - we don't really need it to be annoiyng in finder.
@@ -92,7 +94,7 @@ open_app()
 # Hide RamDisk directory
 hide_ramdisk()
 {
-    /usr/bin/chflags hidden ${mount_point}
+    /usr/bin/chflags hidden "${mount_point}"
 }
 
 # Checks that we have
@@ -120,7 +122,7 @@ check_string_in_file()
 #
 check_for_flag()
 {
-    if [ -e ${1} ] ; then
+    if [ -e "${1}" ] ; then
         return 0;
     else
         return 1;
@@ -132,7 +134,7 @@ check_for_flag()
 #
 make_flag()
 {
-    echo "" > /Applications/OSX-RAMDisk.app/${1}
+    echo "" > /Applications/OSX-RAMDisk.app/"${1}"
 }
 
 # ------------------------------------------------------
@@ -146,13 +148,13 @@ make_flag()
 move_chrome_cache()
 {
     if [ -d "/Users/${USER}/Library/Caches/Google/Chrome" ]; then
-        if user_response ${MSG_PROMPT_FOUND} 'Chrome'${MSG_MOVE_CACHE} ; then
+        if user_response "${MSG_PROMPT_FOUND}" 'Chrome'"${MSG_MOVE_CACHE}" ; then
             close_app "Google Chrome"
             /bin/mkdir -p /tmp/Google/Chrome
             /bin/mv ~/Library/Caches/Google/Chrome/* /tmp/Google/Chrome/
-            /bin/mkdir -pv ${USERRAMDISK}/Google/Chrome/Default
-            /bin/mv /tmp/Google/Chrome/ ${USERRAMDISK}/Google/Chrome
-            /bin/ln -v -s -f ${USERRAMDISK}/Google/Chrome/Default ~/Library/Caches/Google/Chrome/Default
+            /bin/mkdir -pv "${USERRAMDISK}"/Google/Chrome/Default
+            /bin/mv /tmp/Google/Chrome/ "${USERRAMDISK}"/Google/Chrome
+            /bin/ln -v -s -f "${USERRAMDISK}"/Google/Chrome/Default ~/Library/Caches/Google/Chrome/Default
             /bin/rm -rf /tmp/Google/Chrome
             # and let's create a flag for next run that we moved the cache.
             echo "";
@@ -168,11 +170,11 @@ move_chrome_cache()
 move_chrome_chanary_cache()
 {
     if [ -d "/Users/${USER}/Library/Caches/Google/Chrome Canary" ]; then
-        if user_response ${MSG_PROMPT_FOUND} 'Chrome Canary'${MSG_MOVE_CACHE} ; then
+        if user_response "${MSG_PROMPT_FOUND}" 'Chrome Canary'"${MSG_MOVE_CACHE}" ; then
             close_app "Chrome Canary"
             /bin/rm -rf ~/Library/Caches/Google/Chrome\ Canary/*
-            /bin/mkdir -p ${USERRAMDISK}/Google/Chrome\ Canary/Default
-            /bin/ln -s ${USERRAMDISK}/Google/Chrome\ Canary/Default ~/Library/Caches/Google/Chrome\ Canary/Default
+            /bin/mkdir -p "${USERRAMDISK}"/Google/Chrome\ Canary/Default
+            /bin/ln -s "${USERRAMDISK}"/Google/Chrome\ Canary/Default ~/Library/Caches/Google/Chrome\ Canary/Default
         fi
     fi
 }
@@ -183,11 +185,11 @@ move_chrome_chanary_cache()
 move_safari_cache()
 {
     if [ -d "/Users/${USER}/Library/Caches/com.apple.Safari" ]; then
-        if user_response ${MSG_PROMPT_FOUND} 'Safari'${MSG_MOVE_CACHE}; then
+        if user_response "${MSG_PROMPT_FOUND}" 'Safari'"${MSG_MOVE_CACHE}"; then
             close_app "Safari"
             /bin/rm -rf ~/Library/Caches/com.apple.Safari
-            /bin/mkdir -p ${USERRAMDISK}/Apple/Safari
-            /bin/ln -s ${USERRAMDISK}/Apple/Safari ~/Library/Caches/com.apple.Safari
+            /bin/mkdir -p "${USERRAMDISK}"/Apple/Safari
+            /bin/ln -s "${USERRAMDISK}"/Apple/Safari ~/Library/Caches/com.apple.Safari
             echo "Moved Safari cache."
         fi
     fi
@@ -199,11 +201,11 @@ move_safari_cache()
 move_itunes_cache()
 {
     if [ -d "/Users/${USER}/Library/Caches/com.apple.iTunes" ]; then
-        if user_response ${MSG_PROMPT_FOUND} 'iTunes'${MSG_MOVE_CACHE} ; then
+        if user_response "${MSG_PROMPT_FOUND}" 'iTunes'"${MSG_MOVE_CACHE}" ; then
             close_app "iTunes"
-            /bin/rm -rf /Users/${USER}/Library/Caches/com.apple.iTunes
-            /bin/mkdir -pv ${USERRAMDISK}/Apple/iTunes
-            /bin/ln -v -s ${USERRAMDISK}/Apple/iTunes ~/Library/Caches/com.apple.iTunes
+            /bin/rm -rf /Users/"${USER}"/Library/Caches/com.apple.iTunes
+            /bin/mkdir -pv "${USERRAMDISK}"/Apple/iTunes
+            /bin/ln -v -s "${USERRAMDISK}"/Apple/iTunes ~/Library/Caches/com.apple.iTunes
             echo "Moved iTunes cache."
         fi
     fi
@@ -215,7 +217,7 @@ move_itunes_cache()
 move_idea_cache()
 {
     if [ -d "/Applications/IntelliJ IDEA.app" ]; then
-        if user_response ${MSG_PROMPT_FOUND} 'IntelliJ IDEA'${MSG_MOVE_CACHE} ; then
+        if user_response "${MSG_PROMPT_FOUND}" 'IntelliJ IDEA'"${MSG_MOVE_CACHE}" ; then
             close_app "IntelliJ Idea"
             # make a backup of config - will need it when uninstalling
             cp -f /Applications/IntelliJ\ IDEA.app/Contents/bin/idea.properties /Applications/IntelliJ\ IDEA.app/Contents/bin/idea.properties.back
@@ -233,7 +235,7 @@ move_idea_cache()
 move_ideace_cache()
 {
     if [ -d "/Applications/IntelliJ IDEA CE.app" ]; then
-        if user_response ${MSG_PROMPT_FOUND} 'IntelliJ IDEA CE'${MSG_MOVE_CACHE} ; then
+        if user_response "${MSG_PROMPT_FOUND}" 'IntelliJ IDEA CE'"${MSG_MOVE_CACHE}" ; then
             close_app "IntelliJ Idea CE"
             # make a backup of config - will need it when uninstalling
             cp -f /Applications/IntelliJ\ IDEA\ CE.app/Contents/bin/idea.properties /Applications/IntelliJ\ IDEA\ CE.app/Contents/bin/idea.properties.back
@@ -251,7 +253,7 @@ move_ideace_cache()
 #
 create_intermediate_folder_for_intellij_projects()
 {
-    [ -d /Volumes/ramdisk/${USER}/compileroutput ] || mkdir -p /Volumes/ramdisk/${USER}/compileroutput
+    [ -d /Volumes/ramdisk/"${USER}"/compileroutput ] || mkdir -p /Volumes/ramdisk/"${USER}"/compileroutput
 }
 
 #
@@ -260,7 +262,7 @@ create_intermediate_folder_for_intellij_projects()
 move_android_studio_cache()
 {
     if [ -d "/Applications/Android Studio.app" ]; then
-        if user_response ${MSG_PROMPT_FOUND} 'Android Studio'${MSG_MOVE_CACHE} ; then
+        if user_response "${MSG_PROMPT_FOUND}" 'Android Studio'"${MSG_MOVE_CACHE}" ; then
             echo "moving Android Studio cache";
             close_app "Android Studio"
             # make a backup of config - will need it when uninstalling
@@ -279,7 +281,7 @@ move_android_studio_cache()
 move_clion_cache()
 {
     if [ -d "/Applications/Clion.app" ]; then
-        if user_response ${MSG_PROMPT_FOUND} 'Clion'${MSG_MOVE_CACHE} ; then
+        if user_response "${MSG_PROMPT_FOUND}" 'Clion'"${MSG_MOVE_CACHE}" ; then
             echo "moving Clion cache";
             close_app "Clion"
             # make a backup of config - will need it when uninstalling
@@ -298,7 +300,7 @@ move_clion_cache()
 move_appcode_cache()
 {
     if [ -d "/Applications/AppCode.app" ]; then
-        if user_response ${MSG_PROMPT_FOUND} 'AppCode'${MSG_MOVE_CACHE} ; then
+        if user_response "${MSG_PROMPT_FOUND}" 'AppCode'"${MSG_MOVE_CACHE}" ; then
             echo "moving AppCode cache";
             close_app "AppCode"
             # make a backup of config - will need it when uninstalling
@@ -306,7 +308,7 @@ move_appcode_cache()
             # Need to create those dirs
             echo "idea.system.path=${USERRAMDISK}/AppCode" >> /Applications/AppCode.app/Contents/bin/idea.properties
             echo "idea.log.path=${USERRAMDISK}/AppCode/logs" >> /Applications/AppCode.app/Contents/bin/idea.properties
-            mkdir -p ${USERRAMDISK}/AppCode/logs
+            mkdir -p "${USERRAMDISK}"/AppCode/logs
             echo "Moved AppCode cache."
         fi
     fi
@@ -318,13 +320,13 @@ move_appcode_cache()
 move_xcode_cache()
 {
     if [ -d "/Applications/Xcode.app" ]; then
-        if user_response ${MSG_PROMT_FOUND} 'Xcode'${MSG_MOVE_CACHE} ; then
+        if user_response "${MSG_PROMPT_FOUND}" 'Xcode'"${MSG_MOVE_CACHE}" ; then
             echo "moving XCode cache..";
             echo "deleting ~/Library/Developer/Xcode/DerivedData"
 
             /bin/rm -rvf ~/Library/Developer/Xcode/DerivedData
-            /bin/mkdir -pv ${USERRAMDISK}/Apple/Xcode
-            /bin/ln -v -s ${USERRAMDISK}/Apple/Xcode /Users/${USER}/Library/Developer/Xcode/DerivedData
+            /bin/mkdir -pv "${USERRAMDISK}"/Apple/Xcode
+            /bin/ln -v -s "${USERRAMDISK}"/Apple/Xcode /Users/"${USER}"/Library/Developer/Xcode/DerivedData
             echo "Moved Xcode cache."
         fi
     fi
@@ -336,7 +338,7 @@ move_xcode_cache()
 move_phpstorm_cache()
 {
     if [ -d "/Applications/PhpStorm.app" ]; then
-        if user_response ${MSG_PROMPT_FOUND} 'PhpStorm'${MSG_MOVE_CACHE} ; then
+        if user_response "${MSG_PROMPT_FOUND}" 'PhpStorm'"${MSG_MOVE_CACHE}" ; then
             echo "moving PHPStorm cache";
             close_app "PhpStorm"
             # make a backup of config - will need it when uninstalling
