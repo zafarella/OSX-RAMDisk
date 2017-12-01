@@ -320,7 +320,7 @@ move_appcode_cache()
 move_xcode_cache()
 {
     if [ -d "/Applications/Xcode.app" ]; then
-        if user_response ${MSG_PROMT_FOUND} 'Xcode'${MSG_MOVE_CACHE} ; then
+        if user_response ${MSG_PROMPT_FOUND} 'Xcode'${MSG_MOVE_CACHE} ; then
             echo "moving XCode cache..";
             echo "deleting ~/Library/Developer/Xcode/DerivedData"
 
