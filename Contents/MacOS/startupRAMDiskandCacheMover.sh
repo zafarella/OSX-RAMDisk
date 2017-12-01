@@ -24,7 +24,7 @@ ramfs_size_mb=$(sysctl hw.memsize | awk '{print $2;}')
 ramfs_size_mb=(ramfs_size_mb / 1024 / 1024 / 4)
 
 mount_point=/Users/${USER}/ramdisk
-ramfs_size_sectors=$((${ramfs_size_mb}*1024*1024/512))
+ramfs_size_sectors=$(ramfs_size_mb*1024*1024/512)
 ramdisk_device=$(hdid -nomount ram://${ramfs_size_sectors})
 USERRAMDISK="$mount_point"
 
@@ -134,7 +134,7 @@ check_for_flag()
 #
 make_flag()
 {
-    echo "" > /Applications/OSX-RAMDisk.app/${1}
+    echo "" > /Applications/OSX-RAMDisk.app/"${1}"
 }
 
 # ------------------------------------------------------
@@ -203,7 +203,7 @@ move_itunes_cache()
     if [ -d "/Users/${USER}/Library/Caches/com.apple.iTunes" ]; then
         if user_response "${MSG_PROMPT_FOUND}" 'iTunes'"${MSG_MOVE_CACHE}" ; then
             close_app "iTunes"
-            /bin/rm -rf /Users/${USER}/Library/Caches/com.apple.iTunes
+            /bin/rm -rf /Users/"${USER}"/Library/Caches/com.apple.iTunes
             /bin/mkdir -pv "${USERRAMDISK}"/Apple/iTunes
             /bin/ln -v -s "${USERRAMDISK}"/Apple/iTunes ~/Library/Caches/com.apple.iTunes
             echo "Moved iTunes cache."
@@ -253,7 +253,7 @@ move_ideace_cache()
 #
 create_intermediate_folder_for_intellij_projects()
 {
-    [ -d /Volumes/ramdisk/${USER}/compileroutput ] || mkdir -p /Volumes/ramdisk/${USER}/compileroutput
+    [ -d /Volumes/ramdisk/"${USER}"/compileroutput ] || mkdir -p /Volumes/ramdisk/"${USER}"/compileroutput
 }
 
 #
@@ -326,7 +326,7 @@ move_xcode_cache()
 
             /bin/rm -rvf ~/Library/Developer/Xcode/DerivedData
             /bin/mkdir -pv "${USERRAMDISK}"/Apple/Xcode
-            /bin/ln -v -s "${USERRAMDISK}"/Apple/Xcode /Users/${USER}/Library/Developer/Xcode/DerivedData
+            /bin/ln -v -s "${USERRAMDISK}"/Apple/Xcode /Users/"${USER}"/Library/Developer/Xcode/DerivedData
             echo "Moved Xcode cache."
         fi
     fi
