@@ -150,12 +150,12 @@ move_chrome_cache()
     if [ -d "/Users/${USER}/Library/Caches/Google/Chrome" ]; then
         if user_response "${MSG_PROMPT_FOUND}" 'Chrome'"${MSG_MOVE_CACHE}" ; then
             close_app "Google Chrome"
-            /bin/mkdir -p /tmp/Google/Chrome
-            /bin/mv ~/Library/Caches/Google/Chrome/* /tmp/Google/Chrome/
-            /bin/mkdir -pv "${USERRAMDISK}"/Google/Chrome/Default
-            /bin/mv /tmp/Google/Chrome/ "${USERRAMDISK}"/Google/Chrome
-            /bin/ln -v -s -f "${USERRAMDISK}"/Google/Chrome/Default ~/Library/Caches/Google/Chrome/Default
-            /bin/rm -rf /tmp/Google/Chrome
+            /bin/mkdir -p /tmp/Google
+            /bin/mv ~/Library/Caches/Google/* /tmp/Google
+            /bin/mkdir -pv "${USERRAMDISK}"/Google
+            /bin/mv /tmp/Google/* "${USERRAMDISK}"/Google
+            /bin/ln -v -s -f "${USERRAMDISK}"/Google ~/Library/Caches/Google/
+            /bin/rm -rf /tmp/Google
             # and let's create a flag for next run that we moved the cache.
             echo "";
         fi
