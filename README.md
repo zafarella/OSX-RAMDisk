@@ -112,3 +112,6 @@ Alternatives
 If you are Linux user use
 * https://github.com/graysky2/profile-sync-daemon
 
+-----------
+Made with ♥ in NYC
+
