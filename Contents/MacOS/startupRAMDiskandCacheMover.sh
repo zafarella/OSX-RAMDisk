@@ -351,6 +351,23 @@ move_phpstorm_cache()
     fi
 }
 
+#
+# Spotify
+#
+move_spotify_cache()
+{
+    if [ -d "/Applications/Spotify.app" ]; then
+        if user_response "${MSG_PROMPT_FOUND}" 'Spotify'"${MSG_MOVE_CACHE}" ; then
+            echo "moving Spotify cache";
+            close_app "Spotify"
+            rm -rf ~/Library/Caches/com.spotify.client
+            /bin/mkdir -pv "${USERRAMDISK}"/Spotify
+            /bin/ln -s "${USERRAMDISK}"/Spotify ~/Library/Caches/com.spotify.client
+            echo "Moved Spotify cache."
+        fi
+    fi
+}
+
 # -----------------------------------------------------------------------------------
 # The entry point
 # -----------------------------------------------------------------------------------
