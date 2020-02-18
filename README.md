@@ -77,6 +77,22 @@ for your projects at the main menu, choose `File | Other Settings | Default Sett
 In addition to above you can tune jvm with following [flags](https://gist.github.com/zafarella/43bc260c3c0cdc34f109) 
 `vim /Applications/IntelliJ\ IDEA\ 15.app/Contents/bin/idea.vmoptions`
 
+PHPStorm
+========
+
+Also PHPstorm can benefit from ramdisk in this case you will have to change the idea.properties file and move the cache
+location to the ramdisk:
+
+Use the same path as above and add it in the lines below:
+
+```
+idea.system.path={GENERATED_PATH}/system
+idea.log.path={GENERATED_PATH}/log
+```
+
+Keep in mind that when this is activated, it will be reindexed on every reboot. But as it is alot faster this should
+not be an issue.
+
 Installation
 ============
 Do not use it now - the startup script does not work yet - work in progress
