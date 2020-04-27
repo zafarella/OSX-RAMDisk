@@ -22,10 +22,11 @@ Supported apps (you can add yours):
 * [AppCode](https://www.jetbrains.com/objc/)
 * [Xcode](https://developer.apple.com/xcode/downloads/)
 * [PHP Storm](https://www.jetbrains.com/phpstorm/)
+* [Spotify](https://www.spotify.com)
 * [your_app_goes_here]
 
 The IntelliJ Idea (or JetBrains IDEs) are really fast after this. Be aware that for the large code base you will
-need to have larger RAM Disk. I don't have exact numbers, sorry, it can vary because of many factors. Mine 
+need to have larger RAM Disk. I don't have exact numbers, sorry, it can vary because of many factors. Mine
 machine have 16GB - it works very good for small code bases.
 
 If you observing performance degradation - revise how much memory you are using and may be adding more can help.
@@ -33,7 +34,7 @@ By default script will create RAM disk of 1/4 size of your RAM.
 If you need to change the size - edit `startupRAMDiskandCacheMover.sh` header section. The RAM disk works with hibernate
 option - you don't need to worry about this part.
 
-Have something to discuss? 
+Have something to discuss?
 [![Join the chat at https://gitter.im/zafarella/OSX-RAMDisk](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/zafarella/OSX-RAMDisk?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/458/badge)](https://bestpractices.coreinfrastructure.org/projects/458)
@@ -71,10 +72,10 @@ change "Project compiler output" and point it to ram disk:
 echo /Volumes/ramdisk/${USER}/compileroutput
 ```
 and in your project/module settings (Command+down) point to this directory.
-You can also set this [setting by default](https://www.jetbrains.com/idea/help/accessing-default-settings.html) 
+You can also set this [setting by default](https://www.jetbrains.com/idea/help/accessing-default-settings.html)
 for your projects at the main menu, choose `File | Other Settings | Default Settings`
 
-In addition to above you can tune jvm with following [flags](https://gist.github.com/zafarella/43bc260c3c0cdc34f109) 
+In addition to above you can tune jvm with following [flags](https://gist.github.com/zafarella/43bc260c3c0cdc34f109)
 `vim /Applications/IntelliJ\ IDEA\ 15.app/Contents/bin/idea.vmoptions`
 
 Installation
