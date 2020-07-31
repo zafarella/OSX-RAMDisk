@@ -231,21 +231,21 @@ link_brave_dir()
 check_brave_cache()
 {
     if [ -d "/Users/${USER}/Library/Caches/BraveSoftware/Brave-Browser" ]; then
-	if user_response "${MSG_PROMPT_FOUND}" 'Brave'"${MSG_MOVE_CACHE}" ; then
+        if user_response "${MSG_PROMPT_FOUND}" 'Brave'"${MSG_MOVE_CACHE}" ; then
             close_app "Brave Browser"
-	    make_brave_dir
-	    move_brave_cache
-	    link_brave_dir
+            make_brave_dir
+            move_brave_cache
+            link_brave_dir
             /bin/rm -rf /tmp/Brave-Browser
             # and let's create a flag for next run that we moved the cache.
             echo "";
-	fi
+        fi
     elif [ -L "/Users/${USER}/Library/Caches/BraveSoftware/Brave-Browser" ]; then
-	echo "Brave cache already moved"
+        echo "Brave cache already moved"
         close_app "Brave Browser"
-	make_brave_dir
+        make_brave_dir
     else
-	echo "No Brave folder has been found. Skipping."
+        echo "No Brave folder has been found. Skipping."
     fi
 }
 
