@@ -202,6 +202,54 @@ move_chrome_chanary_cache()
 }
 
 #
+# Brave Cache
+#
+
+# Create a directory for Brave in the ramdisk
+make_brave_dir()
+{
+    /bin/mkdir -pv "${USERRAMDISK}"/Brave-Browser
+}
+
+# Move existing Brave cache to ramdisk
+move_brave_cache()
+{
+    /bin/mkdir -p /tmp/Brave-Browser
+    /bin/mv ~/Library/Caches/BraveSoftware/Brave-Browser/* /tmp/Brave-Browser
+    /bin/mv /tmp/Brave-Browser/* "${USERRAMDISK}"/Brave-Browser
+    /bin/rm -rf ~/Library/Caches/BraveSoftware/Brave-Browser
+    
+}
+
+# Link Brave cache to ramdisk
+link_brave_dir()
+{
+    /bin/ln -v -s "${USERRAMDISK}"/Brave-Browser ~/Library/Caches/BraveSoftware/Brave-Browser
+}
+
+# Check what to do with brave
+check_brave_cache()
+{
+    if [ -d "/Users/${USER}/Library/Caches/BraveSoftware/Brave-Browser" ]; then
+        if user_response "${MSG_PROMPT_FOUND}" 'Brave'"${MSG_MOVE_CACHE}" ; then
+            close_app "Brave Browser"
+            make_brave_dir
+            move_brave_cache
+            link_brave_dir
+            /bin/rm -rf /tmp/Brave-Browser
+            # and let's create a flag for next run that we moved the cache.
+            echo "";
+        fi
+    elif [ -L "/Users/${USER}/Library/Caches/BraveSoftware/Brave-Browser" ]; then
+        echo "Brave cache already moved"
+        close_app "Brave Browser"
+        make_brave_dir
+    else
+        echo "No Brave folder has been found. Skipping."
+    fi
+}
+
+#
 # Safari Cache
 #
 move_safari_cache()
@@ -386,6 +434,7 @@ main() {
    move_safari_cache
    move_idea_cache
    move_ideace_cache
+   check_brave_cache
    # create intermediate folder for intellij projects output
    create_intermediate_folder_for_intellij_projects
    move_itunes_cache
